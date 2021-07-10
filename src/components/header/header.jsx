@@ -1,9 +1,9 @@
-import {Link} from 'react-router-dom'
-import './header.css'
+import { Link } from "react-router-dom";
+import "./header.css";
 
-function Header(){
+function Header() {
   return (
-    <nav className='header'>
+    <nav className="header">
       <ul>
         <li>
           <Link to="/events">EVENTS</Link>
@@ -15,11 +15,10 @@ function Header(){
           <Link to="/">HARRIS HIGH SCHOOL</Link>
         </li>
         <li>
-          <Link to='/login'>SIGN IN</Link>
+          <Link to="/login">SIGN IN</Link>
         </li>
       </ul>
-    </nav>  
-  )
-  
+    </nav>
+  );
 }
-export default Header
+export default Header;
