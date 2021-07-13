@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./header.css";
 
-function Header() {
+function Header({ hasLogin }) {
   return (
     <nav className="header">
       <ul>
@@ -15,7 +15,11 @@ function Header() {
           <Link to="/">HARRIS HIGH SCHOOL</Link>
         </li>
         <li>
-          <Link to="/login">SIGN IN</Link>
+          {hasLogin ? (
+            <Link to="/dashboard">DASHBOARD</Link>
+          ) : (
+            <Link to="/login">SIGN IN</Link>
+          )}
         </li>
       </ul>
     </nav>

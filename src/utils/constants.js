@@ -3,4 +3,3 @@ export const ROLE = {
   teacher: "teacher",
   manager: "manager",
 };
-export const BASE_URL = "https://cms.chtoma.com/api";

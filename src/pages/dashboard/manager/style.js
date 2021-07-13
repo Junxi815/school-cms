@@ -23,6 +23,7 @@ export const StyledHeader = styled(Header)`
   font-size: 1.2em;
   color: #fff;
   position: sticky;
+  z-index: 100;
   top: 0;
   & .trigger {
     padding: 0 1.5em;

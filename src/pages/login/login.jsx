@@ -5,7 +5,7 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import { reqLogin } from "../../api";
 import { ROLE } from "../../utils/constants";
-import { userInfo } from "../../utils/storage";
+import { saveUser, getUser } from "../../utils/userInfo";
 import { message } from "antd";
 import Header from "../../components/header/header";
 
@@ -29,104 +29,100 @@ const StyledTitle = styled(Title)`
 
 function Login() {
   const [form] = Form.useForm();
-  let history = useHistory();
+  const history = useHistory();
+  const user = getUser();
 
   const handleSubmit = async (values) => {
     const { role, email, password } = values;
-    let result;
     try {
-      result = await reqLogin(role, email, password);
-      const user = result.data.data;
-      userInfo.saveUser(user);
+      const result = await reqLogin(role, email, password);
+      const user = result.data;
+      saveUser(user);
       history.push(`/dashboard/${user.role}`);
     } catch (error) {
-      if (!!error.response) {
-        message.error(error.response.data.msg);
-      } else {
-        message.error(error.message);
-      }
+      message.error(error.msg);
     }
   };
 
   useEffect(() => {
-    const user = userInfo.getUser();
     if (!!user.role) {
       return <Redirect to={`/dashboard/${user.role}`} />;
     }
-  }, []);
+  });
 
   return (
-    <StyledDiv>
-      <Header />
-      <StyledTitle>COURSE MANAGEMENT ASSISTANT</StyledTitle>
-      <Form
-        name="normal_login"
-        className="login-form"
-        form={form}
-        initialValues={{ role: ROLE.student, remember: true }}
-        validateTrigger="onBlur"
-        onFinish={handleSubmit}
-      >
-        <Form.Item name="role" rules={[{ required: true }]}>
-          <Radio.Group>
-            <Radio.Button value={ROLE.student}>Student</Radio.Button>
-            <Radio.Button value={ROLE.teacher}>Teacher</Radio.Button>
-            <Radio.Button value={ROLE.manager}>Manager</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item
-          name="email"
-          rules={[
-            { required: true, message: "Please input your Username!" },
-            {
-              pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
-              message: "Please input a valid email!",
-            },
-          ]}
+    <>
+      <Header hasLogin={!!user.role} />
+      <StyledDiv>
+        <StyledTitle>COURSE MANAGEMENT ASSISTANT</StyledTitle>
+        <Form
+          name="normal_login"
+          className="login-form"
+          form={form}
+          initialValues={{ role: ROLE.student, remember: true }}
+          onFinish={handleSubmit}
         >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          rules={[
-            { required: true, message: "Please input your Password!" },
-            {
-              min: 4,
-              max: 16,
-              message: "Password must be between 4 and 16 characters!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
+          <Form.Item name="role" rules={[{ required: true }]}>
+            <Radio.Group>
+              <Radio.Button value={ROLE.student}>Student</Radio.Button>
+              <Radio.Button value={ROLE.teacher}>Teacher</Radio.Button>
+              <Radio.Button value={ROLE.manager}>Manager</Radio.Button>
+            </Radio.Group>
           </Form.Item>
-        </Form.Item>
 
-        <Form.Item>
-          <StyledButton
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
+          <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: "Please input your Username!" },
+              {
+                pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+                message: "Please input a valid email!",
+              },
+            ]}
           >
-            Sign in
-          </StyledButton>
-          <span>No account?</span> <Link to="/signup">Sign up</Link>
-        </Form.Item>
-      </Form>
-    </StyledDiv>
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[
+              { required: true, message: "Please input your Password!" },
+              {
+                min: 4,
+                max: 16,
+                message: "Password must be between 4 and 16 characters!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item>
+            <StyledButton
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Sign in
+            </StyledButton>
+            <span>No account?</span> <Link to="/signup">Sign up</Link>
+          </Form.Item>
+        </Form>
+      </StyledDiv>
+    </>
   );
 }
 export default Login;
