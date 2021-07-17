@@ -1,15 +1,31 @@
-import { message, Button, Card, Table, Input, Space, Breadcrumb } from "antd";
+import {
+  message,
+  Button,
+  Card,
+  Table,
+  Input,
+  Space,
+  Breadcrumb,
+  Popconfirm,
+  Typography,
+} from "antd";
 import { useEffect, useState } from "react";
 import { getStudents } from "../../../../api/";
 import { Link } from "react-router-dom";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { debounce } from "lodash";
+import { PlusOutlined } from "@ant-design/icons";
+import { formatDistanceToNow } from "date-fns";
 import { getUser } from "../../../../utils/userInfo";
+
+const { Search } = Input;
+const TextLink = Typography.Link;
 
 const columns = [
   {
     title: "No.",
-    dataIndex: "no",
+    // dataIndex: "no",
     key: "no",
+    render: (text, record, index) => index + 1,
   },
   {
     title: "Name",
@@ -20,18 +36,21 @@ const columns = [
       const nextCode = next.name.charCodeAt(0);
       return preCode > nextCode ? 1 : preCode === nextCode ? 0 : -1;
     },
+    render: (text, record) => (
+      <Link to={`/dashboard/manager/students/${record.id}`}>{record.name}</Link>
+    ),
   },
   {
     title: "Area",
-    dataIndex: "area",
+    dataIndex: "country",
     key: "area",
     filters: [
-      { text: "China", value: "china" },
-      { text: "New Zealand", value: "new zealand" },
-      { text: "Canada", value: "canada" },
-      { text: "Australia", value: "australia" },
+      { text: "China", value: "China" },
+      { text: "New Zealand", value: "New zealand" },
+      { text: "Canada", value: "Canada" },
+      { text: "Australia", value: "Australia" },
     ],
-    onFilter: (value, record) => record.area.includes(value),
+    onFilter: (value, record) => record.country.includes(value),
     width: 100,
   },
   {
@@ -43,7 +62,7 @@ const columns = [
     title: "Selected Curriculum",
     dataIndex: "courses",
     key: "courses",
-    width: "20%",
+    width: "25%",
     render: (courses) => {
       return courses?.map((course) => `"${course.name}"`).join(",");
     },
@@ -61,59 +80,69 @@ const columns = [
   },
   {
     title: "Join Time",
-    dataIndex: "time",
+    dataIndex: "createdAt",
     key: "time",
+    width: "15%",
+    render: (value) =>
+      formatDistanceToNow(new Date(value), { addSuffix: true }),
   },
   {
     title: "Action",
     key: "action",
     render: (text, record) => (
       <Space size="middle">
-        <span>Edit</span>
-        <span>Delete</span>
+        <span>
+          <TextLink onClick={editStudent}>Edit</TextLink>
+        </span>
+        <Popconfirm title="Sure to delete?" onConfirm={cancel}>
+          <TextLink>Delete</TextLink>
+        </Popconfirm>
       </Space>
     ),
   },
 ];
+const editStudent = () => {};
+const cancel = () => {};
 
 export default function Students() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ pageSize: 20, current: 1 });
+  const [query, setQuery] = useState("");
   const [total, setTotal] = useState(0);
   const user = getUser();
 
   useEffect(() => {
     const fetchStudents = async () => {
-      try {
-        setLoading(true);
-        const result = await getStudents({
-          limit: pagination.pageSize,
-          page: pagination.current,
-        });
+      setLoading(true);
+      const reqParams = !!query
+        ? {
+            limit: pagination.pageSize,
+            page: pagination.current,
+            query: query,
+          }
+        : { limit: pagination.pageSize, page: pagination.current };
+      const result = await getStudents(reqParams);
+      if (result.code >= 200 && result.code < 300) {
         const { students } = result.data;
-        const data = students.map((item, index) => ({
-          id: item.id,
-          no: index + 1,
-          name: item.name,
-          area: item.country,
-          email: item.email,
-          courses: item.courses,
-          type: item.type,
-          time: item.createdAt,
-        }));
-        setData(data);
+        setData(students);
         setTotal(result.data.total);
         setLoading(false);
-      } catch (error) {
-        message.error(error.message);
+      } else {
+        message.error(result.msg);
       }
     };
     fetchStudents();
-  }, [pagination]);
+  }, [pagination, query]);
 
   const handleTableChange = (pagination) => {
     setPagination(pagination);
+  };
+
+  const debouncedQuery = (e) => {
+    debounce(function () {
+      setQuery(e.target.value);
+    }, 1000)();
   };
 
   const title = (
@@ -124,19 +153,18 @@ export default function Students() {
   );
 
   const extra = (
-    <Space>
-      <Input placeholder="Search by name"></Input>
-      <Button type="primary">
-        <SearchOutlined />
-      </Button>
-    </Space>
+    <Search
+      placeholder="search by name"
+      onSearch={(value) => setQuery(value)}
+      onChange={debouncedQuery}
+    />
   );
 
   return (
     <>
       <Breadcrumb style={{ marginBottom: "20px" }}>
         <Breadcrumb.Item>
-          <Link to="/dashboard/manager/">{`CMS ${user.role.toUpperCase()} SYSTEM`}</Link>
+          <Link to="/dashboard/manager">{`CMS ${user.role.toUpperCase()} SYSTEM`}</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>Student</Breadcrumb.Item>
         <Breadcrumb.Item>Student List</Breadcrumb.Item>

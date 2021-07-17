@@ -2,8 +2,7 @@ import { Typography, Form, Input, Checkbox, Button, Radio } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { Link, useHistory, Redirect } from "react-router-dom";
-import { useEffect } from "react";
-import { reqLogin } from "../../api";
+import { login } from "../../api";
 import { ROLE } from "../../utils/constants";
 import { saveUser, getUser } from "../../utils/userInfo";
 import { message } from "antd";
@@ -31,24 +30,21 @@ function Login() {
   const [form] = Form.useForm();
   const history = useHistory();
   const user = getUser();
-
+  if (!!user.role) {
+    return <Redirect to={`/dashboard/${user.role}`} />;
+  }
   const handleSubmit = async (values) => {
     const { role, email, password } = values;
-    try {
-      const result = await reqLogin(role, email, password);
+
+    const result = await login(role, email, password);
+    if (!!result.data) {
       const user = result.data;
       saveUser(user);
       history.push(`/dashboard/${user.role}`);
-    } catch (error) {
-      message.error(error.msg);
+    } else {
+      message.error(result.msg);
     }
   };
-
-  useEffect(() => {
-    if (!!user.role) {
-      return <Redirect to={`/dashboard/${user.role}`} />;
-    }
-  });
 
   return (
     <>

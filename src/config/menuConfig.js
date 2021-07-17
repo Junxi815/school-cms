@@ -9,8 +9,6 @@ import {
   EditOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
-import { Menu } from "antd";
-import { Link } from "react-router-dom";
 
 const prefixUrls = {
   manager: "/dashboard/manager",
@@ -21,7 +19,7 @@ const prefixUrls = {
 export const menuList_manager = [
   {
     title: "Overview",
-    key: `${prefixUrls.manager}/`,
+    key: prefixUrls.manager,
     icon: <DashboardOutlined />,
   },
   {
@@ -73,27 +71,7 @@ export const menuList_manager = [
   },
   {
     title: "Message",
-    key: `${prefixUrls}/message`,
+    key: `${prefixUrls.manager}/message`,
     icon: <MessageOutlined />,
   },
 ];
-
-export const getMenuNodes = (menuList) => {
-  return menuList.map((item) => {
-    if (!item.children) {
-      return (
-        <Menu.Item key={item.key} icon={item.icon}>
-          <Link to={item.key}>
-            <span>{item.title}</span>
-          </Link>
-        </Menu.Item>
-      );
-    } else {
-      return (
-        <Menu.SubMenu key={item.key} icon={item.icon} title={item.title}>
-          {getMenuNodes(item.children)}
-        </Menu.SubMenu>
-      );
-    }
-  });
-};

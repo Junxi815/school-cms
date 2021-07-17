@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 
 const errHandler = (err) => {
   if (err.response) {
-    const msg = err.response.data.msg;
+    const msg = err.response.data.msg || err.message;
     const code = err.response.status;
     return { msg, code };
   } else {
@@ -11,32 +11,24 @@ const errHandler = (err) => {
   }
 };
 
-export const reqLogin = (role, email, password) => {
+export const login = (role, email, password) => {
   password = CryptoJS.AES.encrypt(password, "cms").toString();
   return axiosInstance
     .post("/login", { role, email, password })
     .then((res) => res.data)
     .catch(errHandler);
-  // return axiosInstance("/login", { role, email, password }, "POST");
 };
 
-export const reqLogout = () => {
+export const logout = () => {
   return axiosInstance
     .post("/logout")
     .then((res) => res.data)
     .catch(errHandler);
 };
 
-// export const reqLogout = () => ajax("/logout", {}, "POST");
-
-export const getStudents = (pagination) => {
-  const path = `/students/?limit=${pagination.limit}&page=${pagination.page}`;
+export const getStudents = (params) => {
   return axiosInstance
-    .get(path)
+    .get("/students", { params })
     .then((res) => res.data)
     .catch(errHandler);
 };
-// export const getStudents = (pagination) => ajax("/students", pagination);
-// const path = `/students/${Object.entries(pagination)
-//   .map(([key, value]) => `${key}=${value}`)
-//   .join("&")}`;
