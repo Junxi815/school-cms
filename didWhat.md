@@ -1,3 +1,21 @@
+# Task 5
+
+- 完成情况
+  -- student 的 edit add delete 功能
+  -- detail 页面只完成部分
+  -- 静态面包屑
+
+- 思路：
+  -- add 将表单数据作为参数传入执行 form 的 onFinish 方法，onFinish 方法实际调用的是父组件 Students 传递下来的属性方法 handleFormSubmit，调用 api - addStudent,如果成功,设定 isModalVisible 关闭 modal, 如果提交不成功提示信息
+  -- edit,思路类似，调用 api - updateStudent,如果成功，还需要更新当前的 render 数据，即 Table 组件的 data,这里需要特别处理，因为往后端发送参数的 type 是数字，但从后端返回以及在 Table 数据中的 type 是一个对象{name,id}
+
+-想法： 操作 add delete 后最好重新发送当前分页的请求（edit 可以不用）
+
+上次任务问题答案：
+返回 204 请求是因为跨域而引起的，浏览器在处理跨域访问的请求时如果判断请求为复杂请求，则会先向服务器发送一条预检请求，被允许后，会发送第二个请求（返回 code 200)
+`const debouncedQuery = (e) => { debounce(function () { setQuery(e.target.value); }, 1000)(); };`
+搜索框代码不能按上面写，因为输入框 onChange 一次，都会执行 debounce 函数一次，所以用 hook - useCallback
+
 # Task 4（17/7/21）
 
 ## 完成内容
@@ -29,3 +47,7 @@
 1. 一个正在做或者已完成的 react 项目从 jsx 转化为 tsx,需要做些什么？ 可以利用什么工具来转化吗？
    _react-javascript-to-typescript-transform_ package
 2. bug:当不是通过点击 left-menu，而是直接输入 url 或者其他方式跳转，左边的相应的 menu 项没有高亮显示，想办法解决。
+
+```
+
+```

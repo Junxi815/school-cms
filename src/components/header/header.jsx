@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import "./header.css";
+import { getUser } from "../../lib/services/userInfo";
 
-function Header({ hasLogin }) {
+function Header() {
+  const user = getUser();
   return (
     <nav className="header">
       <ul>
@@ -15,8 +17,8 @@ function Header({ hasLogin }) {
           <Link to="/">HARRIS HIGH SCHOOL</Link>
         </li>
         <li>
-          {hasLogin ? (
-            <Link to="/dashboard">DASHBOARD</Link>
+          {user.role ? (
+            <Link to={`/dashboard/${user.role}`}>DASHBOARD</Link>
           ) : (
             <Link to="/login">SIGN IN</Link>
           )}

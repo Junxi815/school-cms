@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getUser } from "../utils/userInfo";
+import { getUser } from "../../services/userInfo";
 
 const baseURL = "https://cms.chtoma.com/api";
 

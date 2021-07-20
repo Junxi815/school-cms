@@ -1,40 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Menu, message, Spin } from "antd";
-import { Link, Switch, Route, useHistory, useLocation } from "react-router-dom";
-import { getUser, removeUser } from "../../../utils/userInfo";
+import {
+  Link,
+  Switch,
+  Redirect,
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import { getUser, removeUser } from "../../../lib/services/userInfo";
 import { StyledHeader, LogoSpan } from "./style";
 import ManagementHome from "./home";
 import Students from "./students";
-import { logout } from "../../../api";
+import { logout } from "../../../lib/services/api";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { menuList_manager } from "../../../config/menuConfig";
+import { getMenuNodes } from "../../../lib/utils/side-nav";
+import { menuList_manager } from "../../../lib/constants/side-nav-list";
+import StudentDetail from "./students/detail";
 
 const { Sider, Content } = Layout;
-/**trying to render menu list through method */
-
-const getMenuNodes = (menuList) => {
-  return menuList.map((item) => {
-    if (!item.children) {
-      return (
-        <Menu.Item key={item.key} icon={item.icon}>
-          <Link to={item.key}>
-            <span>{item.title}</span>
-          </Link>
-        </Menu.Item>
-      );
-    } else {
-      return (
-        <Menu.SubMenu key={item.key} icon={item.icon} title={item.title}>
-          {getMenuNodes(item.children)}
-        </Menu.SubMenu>
-      );
-    }
-  });
-};
 
 export default function Manager() {
   const [collapsed, setCollapsed] = useState(false);
@@ -44,27 +32,26 @@ export default function Manager() {
   const location = useLocation();
   const user = getUser();
 
-  useEffect(() => {
-    const { pathname } = location;
-    setSelectedKeys([pathname]);
-  }, [location]);
-
   const handleLogout = async () => {
     setLoadingStatus(true);
-
     const result = await logout();
+    setLoadingStatus(false);
     if (result.code >= 200 && result.code < 300) {
       removeUser();
       history.push("/login");
     } else {
       message.error(result.msg);
     }
-    setLoadingStatus(false);
   };
 
   const toggle = () => {
     setCollapsed(!collapsed);
   };
+
+  useEffect(() => {
+    const { pathname } = location;
+    setSelectedKeys([pathname]);
+  }, [location]);
 
   return (
     <Spin spinning={isLoading} tip="loading......">
@@ -88,7 +75,7 @@ export default function Manager() {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={["/dashboard/manager"]}
+            defaultSelectedKeys={["/dashboard/manager/"]}
             selectedKeys={selectedKeys}
           >
             {getMenuNodes(menuList_manager)}
@@ -125,11 +112,14 @@ export default function Manager() {
             }}
           >
             <Switch>
-              <Route exact path="/dashboard/manager/">
+              <Route exact path="/dashboard/manager">
                 <ManagementHome />
               </Route>
-              <Route path="/dashboard/manager/students">
+              <Route exact path="/dashboard/manager/students">
                 <Students />
+              </Route>
+              <Route path="/dashboard/manager/students/:id">
+                <StudentDetail />
               </Route>
               <Route path="/dashboard/manager/teachers">
                 <div>teachers</div>
@@ -146,6 +136,7 @@ export default function Manager() {
               <Route path="/dashboard/manager/message">
                 <div>message</div>
               </Route>
+              <Redirect to="/dashboard/manager" />
             </Switch>
           </Content>
         </Layout>

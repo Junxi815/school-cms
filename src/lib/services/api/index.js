@@ -32,3 +32,31 @@ export const getStudents = (params) => {
     .then((res) => res.data)
     .catch(errHandler);
 };
+
+export const addStudent = (params) => {
+  return axiosInstance
+    .post("/students", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const updateStudent = (params) => {
+  return axiosInstance
+    .put("/students", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const deleteStudent = (id) => {
+  return axiosInstance
+    .delete(`/students/${id}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getStudentById = (id) => {
+  return axiosInstance
+    .get(`/students/${id}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};

@@ -2,9 +2,9 @@ import { Typography, Form, Input, Checkbox, Button, Radio } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { Link, useHistory, Redirect } from "react-router-dom";
-import { login } from "../../api";
-import { ROLE } from "../../utils/constants";
-import { saveUser, getUser } from "../../utils/userInfo";
+import { login } from "../../lib/services/api";
+import { ROLE } from "../../lib/constants/role";
+import { saveUser, getUser } from "../../lib/services/userInfo";
 import { message } from "antd";
 import Header from "../../components/header/header";
 
