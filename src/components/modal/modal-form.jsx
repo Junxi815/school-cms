@@ -1,6 +1,6 @@
 import { Modal, Button } from "antd";
 
-export default function studentModal({
+export default function ModalForm({
   children,
   visible,
   handleCancel,

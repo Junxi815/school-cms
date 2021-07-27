@@ -1,3 +1,46 @@
+# Task 7
+
+## 实现 sideBar
+
+- 建立 sideMenu 的数据原型
+- 根据用户 role 找到相应的 sideBar 的数据
+- 将 sideBar 的链接项的 key 改为和路由路径一致（唯一性）
+- 根据路由 pathname 得到 defaultSelectedKeys, defaultOpenKeys,然后赋值给 Menu 组件的 props
+- 在 Menu 内，map 产生<Menu.Item>（用到递归）
+
+### 函数 getMenuConfig
+
+- 裁剪当前路由路径，在最后是 detail 页面的情况下
+- 搜索当前 active 在 menu 中的 record
+- 从 record 里得到 defaultSelectedKeys, defaultOpenKeys
+
+## 实现动态 breadCrumb
+
+- 根据当前路由路径确定它在 menu 中的 search record
+- record 中 item 的属性 hideLinkInBreadcrumb 来决定是否可以链接
+- 末端的 breadcrumb 不可链接
+
+# 问题 bug:
+
+1. 点击 breadcrumb 的第一项 也会执行组件 SideBar,SideBar 里也能取到新的 defaultSelectedKeys 和 defaultOpenKeys 值，但左侧 menu 的选中项不变，不 render()？需要重新刷新？
+
+# Task 6
+
+用递归实现斐波那契数列计算,当传入数值比较大时，占用太多内存，容易使电脑崩溃。
+` function fib(num) {
+if (num > 0 && Number.isInteger(num)) {
+if (num === 1 || num === 2) return 1;
+}
+return fib(num - 1) + fib(num - 2);
+}
+
+console.log(fib(16)); `
+
+- 递归规则：
+  -- 知道什么时候停止
+  -- 知道怎样算一个步骤
+  -- 把问题分解为一个步骤和一个较小的问题
+
 # Task 5
 
 - 完成情况

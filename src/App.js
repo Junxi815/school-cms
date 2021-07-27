@@ -4,10 +4,10 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Login from "./pages/login/login";
-import Home from "./pages/home/home";
-import Dashboard from "./pages/dashboard/dashboard";
-import Signup from "./pages/signup/signup";
+import Login from "./pages/login";
+import Home from "./pages/home";
+import Dashboard from "./pages/dashboard";
+import Signup from "./pages/signup";
 import "./App.css";
 
 function App() {

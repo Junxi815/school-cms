@@ -5,9 +5,9 @@ import {
   Table,
   Input,
   Space,
-  Breadcrumb,
   Popconfirm,
   Typography,
+  Layout,
 } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -19,11 +19,11 @@ import {
 import { Link } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import { formatDistanceToNow } from "date-fns";
-import { getUser } from "../../../../lib/services/userInfo";
 import { useDebouncedSearch } from "../../../../components/custom-hooks/debounce-search";
 import ModelForm from "../../../../components/modal/modal-form";
 import AddEditForm from "../../../../components/students/add-edit-form";
 import { studentTypes } from "../../../../lib/constants/student-types";
+import { assign, findKey } from "lodash";
 
 const { Search } = Input;
 const TextLink = Typography.Link;
@@ -36,7 +36,6 @@ export default function Students() {
   const [total, setTotal] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
-  const user = getUser();
 
   const handleTableChange = (pagination) => {
     setPagination(pagination);
@@ -48,7 +47,7 @@ export default function Students() {
     {
       title: "No.",
       key: "no",
-      render: (text, record, index) => index + 1,
+      render: (_1, _2, index) => index + 1,
     },
     {
       title: "Name",
@@ -59,7 +58,7 @@ export default function Students() {
         const nextCode = next.name.charCodeAt(0);
         return preCode > nextCode ? 1 : preCode === nextCode ? 0 : -1;
       },
-      render: (text, record) => (
+      render: (_, record) => (
         <Link to={`/dashboard/manager/students/${record.id}`}>
           {record.name}
         </Link>
@@ -114,7 +113,7 @@ export default function Students() {
     {
       title: "Action",
       key: "action",
-      render: (text, record) => (
+      render: (_, record) => (
         <Space size="middle">
           <span>
             <TextLink
@@ -126,7 +125,7 @@ export default function Students() {
             </TextLink>
           </span>
           <Popconfirm
-            title="Sure to delete?"
+            title="Are you sure to delete?"
             onConfirm={() => deleteRecord(record)}
           >
             <TextLink>Delete</TextLink>
@@ -146,6 +145,7 @@ export default function Students() {
   };
   const deleteRecord = async (student) => {
     const result = await deleteStudent(student.id);
+
     if (result.code >= 200 && result.code < 300) {
       const index = data.findIndex((item) => item.id === student.id);
       const newData = [...data];
@@ -163,37 +163,28 @@ export default function Students() {
     const result = !!editingStudent
       ? await updateStudent({ id: editingStudent.id, ...formValues })
       : await addStudent(formValues);
+
     if (result.code >= 200 && result.code < 300) {
       setModalVisible(false);
       message.success(result.msg);
       if (!!editingStudent) {
         const index = data.findIndex((item) => item.id === editingStudent.id);
-        data[index].type.id = formValues.type;
-        data[index].type.name = Object.keys(studentTypes).find(
-          (key) => studentTypes[key] === formValues.type
-        );
-        data[index].name = formValues.name;
-        data[index].country = formValues.country;
-        data[index].email = formValues.email;
+        const { type, name, country, email } = formValues;
+        // const typeName = Object.keys(studentTypes).find(
+        //   (key) => studentTypes[key] === type );
+        const typeName = findKey(studentTypes, (value) => value === type);
+
+        const obj = {
+          type: { id: formValues.type, name: typeName },
+          name,
+          country,
+          email,
+        };
+        assign(data[index], obj);
         setData([...data]);
       }
     }
   };
-
-  const title = (
-    <Button type="primary" onClick={addAction}>
-      <PlusOutlined />
-      Add
-    </Button>
-  );
-
-  const extra = (
-    <Search
-      placeholder="search by name"
-      onSearch={(value) => setQuery(value)}
-      onChange={debouncedQuery}
-    />
-  );
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -221,15 +212,23 @@ export default function Students() {
   }, [pagination, query]);
 
   return (
-    <>
-      <Breadcrumb style={{ marginBottom: "20px" }}>
-        <Breadcrumb.Item>
-          <Link to="/dashboard/manager">{`CMS ${user.role.toUpperCase()} SYSTEM`}</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Student</Breadcrumb.Item>
-        <Breadcrumb.Item>Student List</Breadcrumb.Item>
-      </Breadcrumb>
-      <Card title={title} extra={extra}>
+    <Layout>
+      <Card
+        title={
+          <Button type="primary" onClick={addAction}>
+            <PlusOutlined />
+            Add
+          </Button>
+        }
+        extra={
+          <Search
+            placeholder="search by name"
+            onSearch={(value) => setQuery(value)}
+            onChange={debouncedQuery}
+            style={{ width: "250px" }}
+          />
+        }
+      >
         <Table
           columns={columns}
           rowKey={(record) => record.id}
@@ -254,6 +253,6 @@ export default function Students() {
           student={editingStudent}
         />
       </ModelForm>
-    </>
+    </Layout>
   );
 }

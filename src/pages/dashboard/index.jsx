@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Manager from "./manager/manager";
+import Manager from "./manager";
 import Teacher from "./teacher";
 import Student from "./student";
 import { getUser } from "../../lib/services/userInfo";

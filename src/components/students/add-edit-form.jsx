@@ -2,7 +2,8 @@ import { Form, Input, Button, Select } from "antd";
 import styled from "styled-components";
 import { studentTypes } from "../../lib/constants/student-types";
 
-const Option = { Select };
+const { Option } = Select;
+
 const formItemLayout = {
   labelCol: { span: 5 },
   wrapperCol: { offset: 1 },
