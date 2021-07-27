@@ -13,6 +13,10 @@ export default function Dashboard() {
       {!user.role && <Redirect to="/login" />}
 
       <Switch>
+        <Route exact path="/dashboard">
+          <Redirect to={`/dashboard/${user.role}`} />
+        </Route>
+
         <Route path="/dashboard/manager">
           <Manager />
         </Route>

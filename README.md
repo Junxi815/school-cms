@@ -24,7 +24,8 @@
 
 # 问题 bug:
 
-1. 点击 breadcrumb 的第一项 也会执行组件 SideBar,SideBar 里也能取到新的 defaultSelectedKeys 和 defaultOpenKeys 值，但左侧 menu 的选中项不变，不 render()？需要重新刷新？
+- 点击 breadcrumb 的第一项(to="/dashboard/manager") 也会执行组件 SideBar,SideBar 里也能取到新的 defaultSelectedKeys 和 defaultOpenKeys 值，但左侧 menu 的选中项不变，不 render()？需要重新刷新？
+- breadcrumb 的第一项(to="/dashboard")就没问题 （实际上也是<Redirect to="/dashboard/manager" />
 
 # Task 6
 

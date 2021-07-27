@@ -8,9 +8,8 @@ export default function AppBreadcrumb({ sideNavWithKeys, role, pathname }) {
   return (
     <Breadcrumb style={{ marginBottom: "20px" }}>
       <Breadcrumb.Item>
-        <Link to={`/dashboard/${role}`}>
-          {`CMS ${role.toUpperCase()} SYSTEM`}
-        </Link>
+        <Link to={`/dashboard`}>{`CMS ${role.toUpperCase()} SYSTEM`}</Link>
+        {/* 这里如果link到/dashboard/manager 就有问题 */}
       </Breadcrumb.Item>
       {footprintRecord.map((item, i) => {
         if (item.hideLinkInBreadcrumb) {
