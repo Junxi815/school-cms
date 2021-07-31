@@ -1,15 +1,14 @@
 import { Breadcrumb } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getFootprint, isDetailPath } from "../../lib/utils/side-nav";
 
-export default function AppBreadcrumb({ sideNavWithKeys, role, pathname }) {
-  console.log("4");
+export default function DashboardBreadcrumb({ sideNavWithKeys, role }) {
+  const { pathname } = useLocation();
   const footprintRecord = getFootprint(sideNavWithKeys, pathname);
   return (
     <Breadcrumb style={{ marginBottom: "20px" }}>
       <Breadcrumb.Item>
         <Link to={`/dashboard`}>{`CMS ${role.toUpperCase()} SYSTEM`}</Link>
-        {/* 这里如果link到/dashboard/manager 就有问题 */}
       </Breadcrumb.Item>
       {footprintRecord.map((item, i) => {
         if (item.hideLinkInBreadcrumb) {

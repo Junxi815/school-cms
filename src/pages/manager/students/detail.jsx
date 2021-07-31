@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getStudentById } from "../../../../lib/services/api";
+import { getStudentById } from "../../../lib/services/api";
 import { Card, Row, Col, Avatar, Typography, Tabs, Tag, Table } from "antd";
 import styled from "styled-components";
-import { programLanguageColors } from "../../../../lib/constants/programLanguageColors";
-import { getUser } from "../../../../lib/services/userInfo";
+import { programLanguageColors } from "../../../lib/constants/programLanguageColors";
+import { getUser } from "../../../lib/services/userInfo";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;

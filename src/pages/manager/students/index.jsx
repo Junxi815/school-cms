@@ -15,20 +15,29 @@ import {
   addStudent,
   updateStudent,
   deleteStudent,
-} from "../../../../lib/services/api";
+} from "../../../lib/services/api";
 import { Link } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import { formatDistanceToNow } from "date-fns";
-import { useDebouncedSearch } from "../../../../components/custom-hooks/debounce-search";
-import ModelForm from "../../../../components/modal/modal-form";
-import AddEditForm from "../../../../components/students/add-edit-form";
-import { studentTypes } from "../../../../lib/constants/student-types";
+import { useDebouncedSearch } from "../../../components/custom-hooks/debounce-search";
+import ModelForm from "../../../components/modal/modal-form";
+import AddEditForm from "../../../components/students/add-edit-form";
+import { studentTypes } from "../../../lib/constants/student-types";
 import { assign, findKey } from "lodash";
+// import { useFormatMenuConfig } from "../../../components/custom-hooks/menu-config";
+// import { StateContext } from "../../dashboardchild";
 
 const { Search } = Input;
 const TextLink = Typography.Link;
 
 export default function Students() {
+  // const { sideNavWithKeys, setDefaultOpenKeys, setDefaultSelectedKeys } =
+  //   useContext(StateContext);
+  // useFormatMenuConfig(
+  //   sideNavWithKeys,
+  //   setDefaultOpenKeys,
+  //   setDefaultSelectedKeys
+  // );
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ pageSize: 20, current: 1 });
