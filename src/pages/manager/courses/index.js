@@ -17,15 +17,11 @@ export default function Courses() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      // setLoading(true);
       const result = await getCourses(pagination);
-      // setLoading(false);
-
-      if (result.code >= 200 && result.code < 300) {
+      if (result.data) {
         const { courses, total } = result.data;
         const newData = data.concat(courses);
         setData(newData);
-        // setTotalItems(total);
         setHasMore(total > data.length);
       } else {
         message.error(result.msg);
@@ -45,7 +41,7 @@ export default function Courses() {
           </h4>
         }
         endMessage={<h4 style={{ textAlign: "center" }}>No More Course!</h4>}
-        scrollableTarget="contentLayout"
+        scrollableTarget="root"
         style={{ overflow: "hidden" }}
       >
         <List
@@ -55,7 +51,10 @@ export default function Courses() {
           renderItem={(item) => (
             <List.Item key={item.id}>
               <CourseOverview {...item}>
-                <Link to={`/dashboard/${user.role}/courses/${item.id}`}>
+                <Link
+                  to={`/dashboard/${user.role}/courses/${item.id}`}
+                  style={{ marginTop: "50px" }}
+                >
                   <Button type="primary">Read More</Button>
                 </Link>
               </CourseOverview>

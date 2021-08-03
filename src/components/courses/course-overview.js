@@ -14,6 +14,7 @@ const getDuration = (data) => {
 
 const StyledRow = styled(Row)`
   position: relative;
+  margin: 0 !important;
   :after {
     content: "";
     position: absolute;
@@ -58,7 +59,7 @@ export default function CourseOverview(props) {
         </Col>
       </StyledRow>
 
-      <Row gutter={[6, 16]} justify="space-between">
+      <Row gutter={[6, 16]} justify="space-between" style={{ margin: "0px" }}>
         <Col>
           <UserOutlined
             style={{ marginRight: 5, fontSize: 16, color: "#1890ff" }}

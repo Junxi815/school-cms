@@ -13,6 +13,7 @@ import ManagerHome from "../manager/home";
 import Students from "../manager/students";
 import StudentDetail from "../manager/students/detail";
 import Courses from "../manager/courses";
+import CourseDetail from "../manager/courses/detail";
 import { getUser, removeUser } from "../../lib/services/userInfo";
 import DashboardBreadcrumb from "../../components/breadcrumb/breadCrumb";
 
@@ -125,7 +126,6 @@ export default function DashboardChild() {
               style={{
                 padding: 24,
                 minHeight: 280,
-                overflow: "scroll",
               }}
             >
               <DashboardBreadcrumb
@@ -154,6 +154,9 @@ export default function DashboardChild() {
                 </Route>
                 <Route exact path="/dashboard/manager/courses">
                   <Courses />
+                </Route>
+                <Route exact path="/dashboard/manager/courses/:id">
+                  <CourseDetail />
                 </Route>
                 <Route exact path="/dashboard/manager/add-course">
                   <div>add course</div>

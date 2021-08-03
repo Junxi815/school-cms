@@ -58,7 +58,7 @@ export default function StudentDetail() {
   useEffect(() => {
     (async () => {
       const result = await getStudentById(id);
-      if (result.code >= 200 && result.code < 300) {
+      if (result.data) {
         const { data } = result;
         const info = [
           { label: "Name", value: data.name },

@@ -67,3 +67,10 @@ export const getCourses = (params) => {
     .then((res) => res.data)
     .catch(errHandler);
 };
+
+export const getCourseById = (id) => {
+  return axiosInstance
+    .get(`/courses/detail/?id=${id}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};

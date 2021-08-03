@@ -22,14 +22,13 @@ export default function BackToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const element = document.getElementById("contentLayout");
+    const element = document.getElementById("root");
     const listener = (event) => {
       const isVisible = event.target.scrollTop > 600;
-
       setVisible(isVisible);
     };
     element.addEventListener("scroll", listener);
-
+    //scroll 条件
     return () => {
       element.removeEventListener("scroll", listener);
     };
@@ -38,7 +37,7 @@ export default function BackToTop() {
   return visible ? (
     <ToTop
       onClick={() => {
-        const element = document.getElementById("contentLayout");
+        const element = document.getElementById("root");
         // console.log(element);
         // element.scrollTop = 0;
         element.scrollTo({ top: 0, behavior: "smooth" });

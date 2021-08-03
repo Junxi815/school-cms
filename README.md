@@ -1,5 +1,36 @@
 # wrote Login page - sign in form
 
+# Task 9
+
+## 问题：
+
+- 在一作用域内定义常量 与 state 名字一样 不会冲突 react 的处理机制
+
+API 前端接口实现
+
+1. 搞清楚 API
+   请求的结构 interface xxxxRequest{}, 响应的结构 interface xxxResponse() ps restful -> {code: number,data:any,msg:string} ---> 自定义的 code 先把结构定义出来
+2. 接口的实现
+   xxxRequest ---> 请求函数的实现，依赖 req and res
+3. 调用方怎么收集 request 信息， 发送请求 -----> 处理请求 --->
+4. 写 UI，如果先写 UI，需要填点假数据进去
+
+# Task 8
+
+## 完成：
+
+- 整理路由结构
+- infiniteScroll list
+
+## infiniteScroll list 思路；
+
+- 建立 courses 的 api 函数
+- 下载可以实现的 infiniteScroll 的包
+- 从 api 得到数据，并设定 infiniteScroll 组件需要的参数，设定 infiniteScroll 组件
+- 通过组件滚动条触发函数（next）触发重新查询后台数据
+- 设定 infiniteScroll 组件的子组件 List 的 render 样式
+- 设定可以让滚动条回到顶部的组件
+
 # Task 7
 
 ## 实现 sideBar
