@@ -1,12 +1,26 @@
 # wrote Login page - sign in form
 
+# Task 10
+
+上传图片不成功：Status Code: 503 Service Unavailable
+
+即使添加图片失败 也可以点击提交表单 cover=''
+
 # Task 9
+
+## 思路
+
+- 建立得到某个 id course 的 api 函数
+- 从当前路由得到 id，然后调用 api 得到网页 render 需要的 data
+- 利用 antd 组件和自定义组件，结合数据，写页面布局和渲染内容
+- 利用调试工具帮助，调整 css,如调整左边 Card 下方 element 的 border，进度条 steps，当前 activeIndex, Collapse，当前打开的 panel
 
 ## 问题：
 
-- 在一作用域内定义常量 与 state 名字一样 不会冲突 react 的处理机制
+- MDN 学习元素高度
+- 在一作用域内定义常量 与 state 名字一样 不会冲突 局部常量查找从内向外查找
 
-API 前端接口实现
+### API 前端接口实现：
 
 1. 搞清楚 API
    请求的结构 interface xxxxRequest{}, 响应的结构 interface xxxResponse() ps restful -> {code: number,data:any,msg:string} ---> 自定义的 code 先把结构定义出来

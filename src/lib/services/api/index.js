@@ -74,3 +74,31 @@ export const getCourseById = (id) => {
     .then((res) => res.data)
     .catch(errHandler);
 };
+
+export const getTeachers = (params = {}) => {
+  return axiosInstance
+    .get("/teachers", { params })
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getCourseTypes = () => {
+  return axiosInstance
+    .get("/courses/type")
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getCourseCode = () => {
+  return axiosInstance
+    .get("/courses/code")
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const addCourse = (params) => {
+  return axiosInstance
+    .post("/courses", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};

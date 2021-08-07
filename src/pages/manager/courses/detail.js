@@ -57,12 +57,10 @@ export default function CourseDetail() {
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [data, setData] = useState(null);
   useEffect(() => {
-    const getCourseDetail = async () => {
+    (async () => {
       setLoading(true);
       const { data } = await getCourseById(id);
-      setLoading(false);
-      if (data) {
-        console.log(data);
+      if (!!data) {
         const { sales } = data;
         const info = [
           { label: "Price", value: sales.price },
@@ -77,9 +75,9 @@ export default function CourseDetail() {
           )
         );
         setData(data);
+        setLoading(false);
       }
-    };
-    getCourseDetail();
+    })();
   }, []);
   return (
     <>
