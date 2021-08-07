@@ -115,7 +115,6 @@ export default function AddCourseForm({ onSuccess }) {
     if (!!data) {
       setSelectOptions(data.teachers);
     }
-    console.log(data.teachers);
     setLoading(false);
   };
 

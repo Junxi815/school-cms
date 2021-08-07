@@ -10,6 +10,8 @@ import {
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { weekDays } from "../../lib/constants/week-days";
+import { useState } from "react";
+import { updateCourseSchedule } from "../../lib/services/api";
 const { List, Item } = Form;
 const { Option } = Select;
 
@@ -21,9 +23,33 @@ const initialValues = {
   [clsTime]: [{ weekday: "", time: "" }],
 };
 
-export default function UpdateChapterForm({ onSuccess }) {
+export default function UpdateChapterForm({ courseId, scheduleId, onSuccess }) {
   const [form] = Form.useForm();
-  const onFinish = () => {};
+  const [selectedWeekdays, setSelectedWeekdays] = useState([]);
+  const onFinish = (values) => {
+    console.log(values);
+    if (!courseId && !scheduleId) {
+      message.error("You must select a course to update!");
+      return;
+    }
+
+    const { classTime, chapters } = values;
+    const cTime = classTime.map(
+      ({ weekday, time }) => `${weekday} ${time.format("hh:mm:ss")}`
+    );
+    const scheduleUpdateReq = {
+      chapters: chapters.map((item, index) => ({ ...item, order: index + 1 })),
+      classTime: cTime,
+      scheduleId,
+      courseId,
+    };
+    (async () => {
+      const result = await updateCourseSchedule(scheduleUpdateReq);
+      if (result.data) {
+        onSuccess();
+      }
+    })();
+  };
   return (
     <Form
       form={form}
@@ -44,7 +70,12 @@ export default function UpdateChapterForm({ onSuccess }) {
                         {...field}
                         name={[field.name, "name"]}
                         fieldKey={[field.fieldKey, "name"]}
-                        rules={[{ required: true }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Name is required.",
+                          },
+                        ]}
                       >
                         <Input size="large" placeholder="Chapter Name" />
                       </Item>
@@ -55,7 +86,12 @@ export default function UpdateChapterForm({ onSuccess }) {
                         {...field}
                         name={[field.name, "content"]}
                         fieldKey={[field.fieldKey, "content"]}
-                        rules={[{ required: true }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Content is required.",
+                          },
+                        ]}
                       >
                         <Input size="large" placeholder="Chapter content" />
                       </Item>
@@ -111,11 +147,37 @@ export default function UpdateChapterForm({ onSuccess }) {
                         {...field}
                         name={[field.name, "weekday"]}
                         fieldKey={[field.fieldKey, "weekday"]}
-                        rules={[{ required: true }]}
+                        rules={[
+                          { required: true, message: "Weekday is required." },
+                        ]}
                       >
-                        <Select size="large" onChange={(value) => {}}>
+                        <Select
+                          size="large"
+                          onChange={(value) => {
+                            const selectedItem = {
+                              fieldKey: field.fieldKey,
+                              value,
+                            };
+                            console.log(selectedWeekdays);
+                            const trimSelectedWeekdays =
+                              selectedWeekdays.filter(
+                                (item) => item.fieldKey !== field.fieldKey
+                              );
+                            console.log(trimSelectedWeekdays);
+                            trimSelectedWeekdays.push(selectedItem);
+                            setSelectedWeekdays(trimSelectedWeekdays);
+                          }}
+                        >
                           {weekDays.map((day) => (
-                            <Option key={day} value={day}>
+                            <Option
+                              key={day}
+                              value={day}
+                              disabled={
+                                !!selectedWeekdays.find(
+                                  (item) => item.value === day
+                                )
+                              }
+                            >
                               {day}
                             </Option>
                           ))}
@@ -128,7 +190,12 @@ export default function UpdateChapterForm({ onSuccess }) {
                         {...field}
                         name={[field.name, "time"]}
                         fieldKey={[field.fieldKey, "time"]}
-                        rules={[{ required: true }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Exact time is required.",
+                          },
+                        ]}
                       >
                         <TimePicker size="large" style={{ width: "100%" }} />
                       </Item>
@@ -139,6 +206,11 @@ export default function UpdateChapterForm({ onSuccess }) {
                         <MinusCircleOutlined
                           onClick={() => {
                             if (fields.length > 1) {
+                              const SelectedWeekdaysAfterDelete =
+                                selectedWeekdays.filter(
+                                  (item) => item.fieldKey !== field.fieldKey
+                                );
+                              setSelectedWeekdays(SelectedWeekdaysAfterDelete);
                               remove(field.name);
                             } else {
                               message.warn(

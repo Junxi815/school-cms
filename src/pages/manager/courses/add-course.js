@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Steps, Card, message } from "antd";
+import { Steps, Card } from "antd";
 import AddCourseForm from "../../../components/courses/add-course-form";
 import UpdateChapterForm from "../../../components/courses/update-chapter-form";
 import Result from "./add-course-result";
@@ -9,7 +9,7 @@ const { Step } = Steps;
 export default function AddCourse() {
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState([]);
-
+  const { scheduleId, uId } = data;
   const steps = [
     {
       title: "Course Detail",
@@ -26,6 +26,8 @@ export default function AddCourse() {
       title: "Course Schedule",
       content: (
         <UpdateChapterForm
+          courseId={uId}
+          scheduleId={scheduleId}
           onSuccess={() => {
             setCurrent(current + 1);
           }}
