@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Steps, Card } from "antd";
+import { Steps, Card, Result, Button } from "antd";
+import { Link } from "react-router-dom";
 import AddCourseForm from "../../../components/courses/add-course-form";
 import UpdateChapterForm from "../../../components/courses/update-chapter-form";
-import Result from "./add-course-result";
 
 const { Step } = Steps;
 
@@ -36,7 +36,22 @@ export default function AddCourse() {
     },
     {
       title: "Success",
-      content: <Result />,
+      content: (
+        <Result
+          status="success"
+          title="Successfully Create Course!"
+          extra={[
+            <Button type="primary">
+              <Link to={`/dashboard/manager/courses/${data?.id}`}>
+                Go Course
+              </Link>
+            </Button>,
+            <Button>
+              <Link to="/dashboard/manager/add-course">Create Again</Link>
+            </Button>,
+          ]}
+        />
+      ),
     },
   ];
 

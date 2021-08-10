@@ -102,6 +102,7 @@ export default function AddCourseForm({ onSuccess }) {
     (async () => {
       const result = await addCourse(addCourseReq);
       if (!!result.data) {
+        console.log(result.data);
         onSuccess(result.data);
       } else {
         message.error(result.msg);
@@ -154,11 +155,11 @@ export default function AddCourseForm({ onSuccess }) {
               loading={loading}
               optionFilterProp="children"
               filterOption={(input, option) =>
-                option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
-              {selectOptions?.map((teacher, index) => (
-                <Option key={index} value={teacher.id}>
+              {selectOptions?.map((teacher) => (
+                <Option key={teacher.id} value={teacher.id}>
                   {teacher.name}
                 </Option>
               ))}
@@ -202,6 +203,7 @@ export default function AddCourseForm({ onSuccess }) {
               formatter={(value) =>
                 `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               style={{ width: "100%" }}
             ></InputNumber>
           </Item>
@@ -269,7 +271,7 @@ export default function AddCourseForm({ onSuccess }) {
           <UploadItem label="Cover" name="cover">
             <ImgCrop rotate aspect={16 / 9}>
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="https://photoslibrary.googleapis.com/v1/uploads"
                 maxCount={1}
                 listType="picture-card"
                 fileList={fileList}

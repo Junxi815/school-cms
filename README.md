@@ -1,12 +1,52 @@
 # wrote Login page - sign in form
 
+课上回顾：
+
+- 跨越：协议，域名或端口不同
+  -- 解决办法：服务器设置 cors，web 服务器反向代理请求，jsonP 跨域方式, src 一段资源加上参数，web socket 天生支持跨域，前端 proxy 跨域代理
+- 组件标签可以加类型，如<string>，组件就是一个函数
+- 请求错误：Provisional headers are shown，
+  -- 原因可能有：url 写错，命中缓存时可能出现，被插件阻塞，证件过期
+  -- 方法之一：1. 打开 chrome://net-export 点击唯一按钮将网络请求保存到指定文件；2.另打开一窗口，触发相应请求；3.chrome://net-export/点击 stopLogging；4. https://netlog-viewer.appspot.com/#import 这个网页中将文件导入进来，方便查看信息；5. 左变侧边栏有个 events，可以搜索想看的请求。
+- 设置中间状态尽量避免，可以用数学计算方法代替
+
 # Task 10
 
-上传图片不成功：Status Code: 503 Service Unavailable
+## 思路
 
-即使添加图片失败 也可以点击提交表单 cover=''
+- 采用 antd 进度条 Steps 实现单页面分步骤编辑处理
+  -- 设定它的数据结构，包含 title 和 content
+  -- 利用 current 状态值的改变，实现 step 内容的跳转
+
+- add course 页面的思路，也就是 Form 处理
+
+-- useEffect 得到 courseType 和 CourseCode,作为数据用于表单的 item
+-- select teacher item -这里有点不同，onfocus 从后端得到 teachers, -然后关键词搜索得到过滤的 select 选择项
+-- course code 由于该 item 需要 disabled，提交的时候取不到数据，所以得到 code 数据的时候就要设定该 fieldvalue -然后 start date, price, student limit, duration 相抵简单 -接着 description 主要 css 设置
+-- upload 功能：-beforeUpdate 限制图片大小 -onChange 如果上传成功，将返回的 url 作为 cover 值-onPreview 设定一个对象的属性值 数据用于模态框 modal -fileList 来限制上传个数 -取消上传按钮 如果上传太慢可以选择它取消
+
+-- 提交数据，保存返回数据，跳转到第二步
+
+- Update-chapter-form: chapters classTime 页面
+  -- Form.List 的应用 fields add remove
+  -- onchange 需要先删除有选择过的 -过滤 option -点击-号 需要更新选择项
+
+## 问题
+
+- 上传图片不成功：Status Code: 503 Service Unavailable
+- 即使添加图片失败 也可以点击提交表单 cover=''
 
 # Task 9
+
+课上回顾：
+
+- MDN 上面学习元素高度
+- css:先写对布局影响比较大的属性，如 display position flex 再写对布局影响比较小的或没有影响的
+- 鸭式辩型 《JavaScript 权威指南》
+- 调试方法之一: declare 一个变量 在看下变量名. 看有什么属性
+- 函数声明与函数表达式区别：函数声明有作用域的提升
+- bind，call，apply，箭头函数可以改变 this
+- useEffect 完全指南：https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/ useEffect 里的 callback 第一次执行是在函数组件 return 完之后
 
 ## 思路
 
@@ -17,7 +57,6 @@
 
 ## 问题：
 
-- MDN 学习元素高度
 - 在一作用域内定义常量 与 state 名字一样 不会冲突 局部常量查找从内向外查找
 
 ### API 前端接口实现：

@@ -158,12 +158,12 @@ export default function UpdateChapterForm({ courseId, scheduleId, onSuccess }) {
                               fieldKey: field.fieldKey,
                               value,
                             };
-                            console.log(selectedWeekdays);
+
                             const trimSelectedWeekdays =
                               selectedWeekdays.filter(
                                 (item) => item.fieldKey !== field.fieldKey
                               );
-                            console.log(trimSelectedWeekdays);
+
                             trimSelectedWeekdays.push(selectedItem);
                             setSelectedWeekdays(trimSelectedWeekdays);
                           }}

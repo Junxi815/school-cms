@@ -15,6 +15,7 @@ import StudentDetail from "../manager/students/detail";
 import Courses from "../manager/courses";
 import CourseDetail from "../manager/courses/detail";
 import AddCourse from "../manager/courses/add-course";
+import EditCourse from "../manager/courses/edit-course";
 import { getUser, removeUser } from "../../lib/services/userInfo";
 import DashboardBreadcrumb from "../../components/breadcrumb/breadCrumb";
 
@@ -163,7 +164,7 @@ export default function DashboardChild() {
                   <AddCourse />
                 </Route>
                 <Route exact path="/dashboard/manager/edit-course">
-                  <div>edit course</div>
+                  <EditCourse />
                 </Route>
                 <Route exact path="/dashboard/manager/message">
                   <div>message</div>
