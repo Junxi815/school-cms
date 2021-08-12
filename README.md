@@ -1,5 +1,12 @@
 # wrote Login page - sign in form
 
+# Task 11
+
+step 2 跳转到 step 1 改变 display：block and none
+dependency 依赖项最好加上
+纯函数 不改变输入 只返回一个全新的值
+array 方法：es5 19 个 es6
+
 课上回顾：
 
 - 跨越：协议，域名或端口不同

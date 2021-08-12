@@ -18,6 +18,7 @@ import {
   getCourseCode,
   getCourseTypes,
   getTeachers,
+  updateCourse,
 } from "../../lib/services/api";
 import moment from "moment";
 import ImgCrop from "antd-img-crop";
@@ -84,7 +85,8 @@ const getBase64 = (file) => {
   });
 };
 
-export default function AddCourseForm({ onSuccess }) {
+export default function AddCourseForm({ onSuccess, isReset, course }) {
+  console.log({ onSuccess, isReset, course });
   const [loading, setLoading] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
   const [courseTypes, setCourseTypes] = useState([]);
@@ -94,20 +96,28 @@ export default function AddCourseForm({ onSuccess }) {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    const addCourseReq = {
+    const req = {
       ...values,
       duration: +values.duration,
       startTime: values.startTime && values.startTime.format("YYYY/MM/DD"),
     };
-    (async () => {
-      const result = await addCourse(addCourseReq);
-      if (!!result.data) {
-        console.log(result.data);
-        onSuccess(result.data);
-      } else {
-        message.error(result.msg);
-      }
-    })();
+    if (!!course) {
+      (async () => {
+        const result = await updateCourse({ ...req, id: course.id });
+        if (result.data) {
+          message.success("Updated course successfully.");
+        }
+      })();
+    } else {
+      (async () => {
+        const result = await addCourse(req);
+        if (!!result.data) {
+          onSuccess(result.data);
+        } else {
+          message.error(result.msg);
+        }
+      })();
+    }
   };
 
   const onFocus = async () => {
@@ -119,12 +129,35 @@ export default function AddCourseForm({ onSuccess }) {
     setLoading(false);
   };
 
+  if (isReset) {
+    form.resetFields();
+  }
+
   useEffect(() => {
+    if (!!course) {
+      const values = {
+        ...course,
+        type: course.type.map((item) => item.id),
+        teacherId: course.teacherName,
+        startTime: moment(course.startTime),
+      };
+
+      form.setFieldsValue(values);
+
+      setFileList([{ name: "Cover Image", url: course.cover }]);
+    }
+  }, [course, form]);
+
+  useEffect(() => {
+    if (!course && !!onSuccess) {
+      (async () => {
+        const codeResponse = await getCourseCode();
+        !!codeResponse.data && form.setFieldsValue({ uid: codeResponse.data });
+      })();
+    }
     (async () => {
       const typeResponse = await getCourseTypes();
       !!typeResponse.data && setCourseTypes(typeResponse.data);
-      const codeResponse = await getCourseCode();
-      !!codeResponse.data && form.setFieldsValue({ uid: codeResponse.data });
     })();
   }, []);
 
@@ -193,6 +226,9 @@ export default function AddCourseForm({ onSuccess }) {
               disabledDate={(current) =>
                 current && current < moment().endOf("day")
               }
+              onChange={(date) => {
+                console.log(date);
+              }}
               style={{ width: "100%" }}
             />
           </Item>
