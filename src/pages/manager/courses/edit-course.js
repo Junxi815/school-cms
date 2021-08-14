@@ -82,7 +82,6 @@ export default function EditCourse() {
       <Tabs size="large" animated>
         <Tabs.TabPane key="course" tab="Course Detail">
           {/* property is low because below component can be rendered many times when other states are changed */}
-          {/* FIX ME */}
           <AddCourseForm course={course} />
         </Tabs.TabPane>
 
@@ -90,7 +89,6 @@ export default function EditCourse() {
           <UpdateChapterForm
             courseId={course?.id}
             scheduleId={course?.scheduleId}
-            isAdd={false}
           />
         </Tabs.TabPane>
       </Tabs>
