@@ -111,7 +111,7 @@ export const updateCourse = (params) => {
 };
 export const updateCourseSchedule = (params) => {
   return axiosInstance
-    .put("/courses/schedule", params)
+    .put("/courses/schedule", {params})
     .then((res) => res.data)
     .catch(errHandler);
 };
