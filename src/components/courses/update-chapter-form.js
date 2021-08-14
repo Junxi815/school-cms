@@ -10,8 +10,9 @@ import {
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { weekDays } from "../../lib/constants/week-days";
-import { useState } from "react";
-import { updateCourseSchedule } from "../../lib/services/api";
+import { useState, useEffect } from "react";
+import { updateCourseSchedule, getScheduleById } from "../../lib/services/api";
+import moment from "moment";
 const { List, Item } = Form;
 const { Option } = Select;
 
@@ -27,13 +28,13 @@ export default function UpdateChapterForm({ courseId, scheduleId, onSuccess }) {
   const [form] = Form.useForm();
   const [selectedWeekdays, setSelectedWeekdays] = useState([]);
   const onFinish = (values) => {
-    console.log(values);
     if (!courseId && !scheduleId) {
       message.error("You must select a course to update!");
       return;
     }
 
     const { classTime, chapters } = values;
+    console.log(classTime[0].time);
     const cTime = classTime.map(
       ({ weekday, time }) => `${weekday} ${time.format("hh:mm:ss")}`
     );
@@ -46,10 +47,39 @@ export default function UpdateChapterForm({ courseId, scheduleId, onSuccess }) {
     (async () => {
       const result = await updateCourseSchedule(scheduleUpdateReq);
       if (result.data) {
-        onSuccess();
+        message.success("Updated schedule successfully!");
+        if (!!onSuccess) {
+          onSuccess();
+        }
       }
     })();
   };
+
+  useEffect(() => {
+    (async () => {
+      if (!!onSuccess) {
+        return;
+      }
+      if (!!scheduleId) {
+        const { data } = await getScheduleById({ courseId, scheduleId });
+        if (!!data) {
+          const classTimes = data.classTime
+            ? data.classTime.map((item) => {
+                const [weekday, time] = item.split(" ");
+
+                return { weekday, time: new moment(`2021-12-12 ${time}`) }; // day is set randomly
+              })
+            : [];
+
+          form.setFieldsValue({
+            chapters: data.chapters,
+            classTime: classTimes,
+          });
+          setSelectedWeekdays(classTimes.map((item) => item.weekday));
+        }
+      }
+    })();
+  }, [onSuccess, courseId, scheduleId, form]);
   return (
     <Form
       form={form}
