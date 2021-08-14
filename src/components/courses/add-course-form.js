@@ -86,7 +86,6 @@ const getBase64 = (file) => {
 };
 
 export default function AddCourseForm({ onSuccess, isReset, course }) {
-  console.log({ onSuccess, isReset, course });
   const [loading, setLoading] = useState(false);
   const [selectOptions, setSelectOptions] = useState([]);
   const [courseTypes, setCourseTypes] = useState([]);
@@ -113,6 +112,7 @@ export default function AddCourseForm({ onSuccess, isReset, course }) {
         const result = await addCourse(req);
         if (!!result.data) {
           onSuccess(result.data);
+          message.success("Added course successfully.");
         } else {
           message.error(result.msg);
         }
@@ -134,7 +134,7 @@ export default function AddCourseForm({ onSuccess, isReset, course }) {
   }
 
   useEffect(() => {
-    if (!!course) {
+    if (!!course && !onSuccess) {
       const values = {
         ...course,
         type: course.type.map((item) => item.id),
@@ -146,7 +146,7 @@ export default function AddCourseForm({ onSuccess, isReset, course }) {
 
       setFileList([{ name: "Cover Image", url: course.cover }]);
     }
-  }, [course, form]);
+  }, [course, onSuccess, form]);
 
   useEffect(() => {
     if (!course && !!onSuccess) {
@@ -167,6 +167,11 @@ export default function AddCourseForm({ onSuccess, isReset, course }) {
       form={form}
       onFinish={onFinish}
       initialValues={{ durationUnit: 1, cover: "" }}
+      onValuesChange={(_1, _2) => {
+        if (!onSuccess && !course) {
+          message.error("You must select a course to update!");
+        }
+      }}
     >
       <Row gutter={[22, 6]} style={{ marginTop: "1em" }}>
         <Col span={8}>
