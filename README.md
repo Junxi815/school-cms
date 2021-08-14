@@ -1,11 +1,29 @@
 # wrote Login page - sign in form
 
-# Task 11
+# Task 12
 
-step 2 跳转到 step 1 改变 display：block and none
-dependency 依赖项最好加上
-纯函数 不改变输入 只返回一个全新的值
-array 方法：es5 19 个 es6
+# 内容：Edit course page
+
+## 思路
+
+- 带搜索功能的选择框：
+  输入 -> 触发 onSearch -> 调用 api 得到搜索数据（防止频繁调用,api 方法用 debounce 包装一下) -> 将数据更新到状态 -> 新的数据更新 select options -> select onChange -> 更新状态 -> 值传给子组件
+- update course
+  利用已有组件 add-course-form, 用 props 参数差别判断是 add or update （有 onSuccess 是 add） ->
+  if update -> useEffect 调用 api getCourseTypes -> 根据传入 props 设定初始值 course 设定 form 的 initialValues(检查是否都要初始值，可能需要 format) -> 如果没有 course，提醒需要选择一个 course 来 update -> onFinish 调用 update api
+  if add -> useEffect 调用 api getCourseCode and getCourseTypes -> onFinish 调用 add api
+- update schedule
+  利用已有组件 update-chapter-form,用 props 参数差别判断是 add or update （有 onSuccess 是 add）->
+  if update -> 设定 form 初始值(检查是否都要初始值，可能需要 format) -> onFinish 如果没有传入值，提醒必须选择一个 course 来 update 否则直接调用 api
+  if add -> 填完直接调用 api
+
+课上回顾：
+
+- hooks dependency 依赖项最好加上,除非特别确定不依赖
+- 纯函数 不改变输入，只返回一个全新的值
+- 纯 Array 方法：es5 19 个 + es6 几个
+
+# Task 11
 
 课上回顾：
 
