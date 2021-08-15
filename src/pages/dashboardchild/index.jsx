@@ -32,6 +32,7 @@ import {
   MenuFoldOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import Teachers from "../manager/teachers";
 
 const { Content, Sider } = Layout;
 
@@ -152,7 +153,7 @@ export default function DashboardChild() {
                   <StudentDetail />
                 </Route>
                 <Route exact path="/dashboard/manager/teachers">
-                  <div>teachers</div>
+                  <Teachers />
                 </Route>
                 <Route exact path="/dashboard/manager/courses">
                   <Courses />
