@@ -128,10 +128,11 @@ export default function AddCourseForm({ onSuccess, isReset, course }) {
     }
     setLoading(false);
   };
-
-  if (isReset) {
-    form.resetFields();
-  }
+  useEffect(() => {
+    if (isReset) {
+      form.resetFields();
+    }
+  }, [form, isReset]);
 
   useEffect(() => {
     if (!!course && !onSuccess) {

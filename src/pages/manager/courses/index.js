@@ -55,7 +55,7 @@ export default function Courses() {
                   to={`/dashboard/${user.role}/courses/${item.id}`}
                   style={{ marginTop: "50px" }}
                 >
-                  <Button type="primary">Read More</Button>
+                  <Button type="primary" style={{marginTop:"10px"}}>Read More</Button>
                 </Link>
               </CourseOverview>
             </List.Item>

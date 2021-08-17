@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosInstance";
 import CryptoJS from "crypto-js";
+import axios from "axios";
 
 const errHandler = (err) => {
   if (err.response) {
@@ -75,13 +76,6 @@ export const getCourseById = (id) => {
     .catch(errHandler);
 };
 
-export const getTeachers = (params = {}) => {
-  return axiosInstance
-    .get("/teachers", { params })
-    .then((res) => res.data)
-    .catch(errHandler);
-};
-
 export const getCourseTypes = () => {
   return axiosInstance
     .get("/courses/type")
@@ -122,4 +116,52 @@ export const getScheduleById = (params = {}) => {
     .get("/courses/schedule", { params })
     .then((res) => res.data)
     .catch(errHandler);
+};
+
+export const getTeachers = (params = {}) => {
+  return axiosInstance
+    .get("/teachers", { params })
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const addTeacher = (params) => {
+  return axiosInstance
+    .post("/teachers", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const updateTeacher = (params) => {
+  return axiosInstance
+    .put("/teachers", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const deleteTeacher = (id) => {
+  return axiosInstance
+    .delete(`/teachers/${id}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getStatisticsOverview = () => {
+  return axiosInstance
+    .get("/statistics/overview")
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getStatistics = (role) => {
+  return axiosInstance
+    .get(`/statistics/${role}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const getWorld = () => {
+  return axios.get(
+    "https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json"
+  );
 };

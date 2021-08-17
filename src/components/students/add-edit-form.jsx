@@ -16,8 +16,7 @@ const ModalFormSubmit = styled(Form.Item)`
   margin-bottom: 10px;
 `;
 
-export default function AddEditForm(props) {
-  const { student, handleFormSubmit } = props;
+export default function AddEditForm({student, handleFormSubmit }) {
   const [form] = Form.useForm();
   // Note that initialValues cannot be updated by setState dynamically,
   // you should use setFieldsValue in that situation.
@@ -56,7 +55,7 @@ export default function AddEditForm(props) {
       </Form.Item>
       <Form.Item
         name="country"
-        label="Area"
+        label="Country"
         rules={[{ required: true, message: "Please select your country!" }]}
       >
         <Select>

@@ -14,7 +14,7 @@ const getDuration = (data) => {
 
 const StyledRow = styled(Row)`
   position: relative;
-  margin: 0 !important;
+  margin: 10px 0 !important;
   :after {
     content: "";
     position: absolute;
@@ -50,7 +50,7 @@ export default function CourseOverview(props) {
         </Col>
       </StyledRow>
 
-      <StyledRow gutter={[6, 16]} justify="space-between">
+      <StyledRow gutter={[0, 16]} justify="space-between">
         <Col>Teacher:</Col>
         <Col style={{ fontWeight: "bold" }}>
           {props?.teacherName && (
