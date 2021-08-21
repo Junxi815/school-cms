@@ -12,3 +12,10 @@ export interface LineChartProps {
     [key: string]: Statistic[];
   };
 }
+
+export interface BarChartProps {
+  data: {
+    studentInterest: Statistic[];
+    teacherSkills: Statistic[];
+  };
+}

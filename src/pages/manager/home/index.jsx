@@ -14,6 +14,7 @@ import { ROLE } from "../../../lib/constants/role";
 import Distribution from "../../../components/manager/distribution";
 import PieChart from "../../../components/manager/pie";
 import LineChart from "../../../components/manager/line";
+import BarChart from "../../../components/manager/bar";
 
 const OverviewIconCol = styled(Col)`
   display: flex;
@@ -148,6 +149,7 @@ export default function ManagerHome() {
             style={{ background: "#ffaa16" }}
           />
         </Col>
+
         <Col span={12}>
           <Card>
             <ChartSelect defaultValue="student" onSelect={setDistributionRole}>
@@ -167,6 +169,7 @@ export default function ManagerHome() {
             />
           </Card>
         </Col>
+
         <Col span={12}>
           <Card>
             <ChartSelect defaultValue="studentType" onSelect={setSelectedType}>
@@ -209,6 +212,7 @@ export default function ManagerHome() {
             )}
           </Card>
         </Col>
+
         <Col span={12}>
           <Card>
             <LineChart
@@ -216,6 +220,17 @@ export default function ManagerHome() {
                 [ROLE.student]: studentStatistics?.createdAt,
                 [ROLE.teacher]: teacherStatistics?.createdAt,
                 course: courseStatistics?.createdAt,
+              }}
+            />
+          </Card>
+        </Col>
+
+        <Col span={12}>
+          <Card>
+            <BarChart
+              data={{
+                studentInterest: studentStatistics?.interest,
+                teacherSkills: teacherStatistics?.skills,
               }}
             />
           </Card>
