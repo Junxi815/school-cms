@@ -160,7 +160,7 @@ export const getStatistics = (role) => {
     .catch(errHandler);
 };
 
-export const getWorld = () => {
+export const getMapGeoJSON = () => {
   return axios.get(
     "https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json"
   );

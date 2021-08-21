@@ -36,10 +36,8 @@ import Teachers from "../manager/teachers";
 
 const { Content, Sider } = Layout;
 
-export const StateContext = React.createContext();
-
 export default function DashboardChild() {
-  const { role } = useParams();
+  const { role } = useParams<{ role: "manager" | "teacher" | "student" }>();
   const user = getUser();
   const history = useHistory();
   const { pathname } = useLocation();
@@ -50,7 +48,7 @@ export default function DashboardChild() {
   let sideNav, sideNavWithKeys, defaultOpenKeys, defaultSelectedKeys;
 
   if (!!user && (!role || role === user.role)) {
-    sideNav = sideNavLists.find((item) => item.role === role).sideNav;
+    sideNav = sideNavLists.find((item) => item.role === role)?.sideNav;
     sideNavWithKeys = getSideNavWithKeys(sideNav, role);
     const menuConfig = getMenuConfig(sideNavWithKeys, pathname);
     defaultOpenKeys = menuConfig.defaultOpenKeys;

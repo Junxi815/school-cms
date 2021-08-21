@@ -12,6 +12,8 @@ import {
 } from "../../../lib/services/api";
 import { ROLE } from "../../../lib/constants/role";
 import Distribution from "../../../components/manager/distribution";
+import PieChart from "../../../components/manager/pie";
+import LineChart from "../../../components/manager/line";
 
 const OverviewIconCol = styled(Col)`
   display: flex;
@@ -39,10 +41,25 @@ const OverviewCol = styled(Col)`
   }
 `;
 
+const ChartSelect = styled(Select)`
+  position: "relative";
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+  .ant-select:not(.ant-select-customize-input),
+  .ant-select-selector {
+    border: 0 !important;
+  }
+  .ant-select-selector,
+  .ant-select-selector:focus,
+  .ant-select-selector:active {
+    box-shadow: none !important;
+  }
+`;
+
 const Overview = ({ data, title, icon, style }) => {
   const [lastMonthAddedPercent, setLastMonthAddedPercent] = useState(0);
   const [total, setTotal] = useState(0);
-
   useEffect(() => {
     if (!!data) {
       const lastMonthAddedPercent = parseFloat(
@@ -81,6 +98,7 @@ export default function ManagerHome() {
   const [studentStatistics, setStudentStatistics] = useState(null);
   const [teacherStatistics, setTeacherStatistics] = useState(null);
   const [courseStatistics, setCourseStatistics] = useState(null);
+  const [selectedType, setSelectedType] = useState("studentType");
 
   useEffect(() => {
     getStatisticsOverview().then((res) => {
@@ -103,7 +121,7 @@ export default function ManagerHome() {
 
   return (
     <Card>
-      <Row align="middle" gutter={[24, 16]}>
+      <Row align="middle" gutter={[16, 24]}>
         <Col span={8}>
           <Overview
             title="TOTAL STUDENTS"
@@ -130,29 +148,78 @@ export default function ManagerHome() {
             style={{ background: "#ffaa16" }}
           />
         </Col>
-      </Row>
-      <Row>
         <Col span={12}>
-          <Card
-            title="Distribution"
-            extra={
-              <Select defaultValue="student" onSelect={setDistributionRole}>
-                <Select.Option value={ROLE.student}>Student</Select.Option>
-                <Select.Option value={ROLE.teacher}>Teacher</Select.Option>
-              </Select>
-            }
-          >
+          <Card>
+            <ChartSelect defaultValue="student" onSelect={setDistributionRole}>
+              <Select.Option value={ROLE.student}>
+                Students Distribution
+              </Select.Option>
+              <Select.Option value={ROLE.teacher}>
+                Teachers Distribution
+              </Select.Option>
+            </ChartSelect>
             <Distribution
               data={
                 distributionRole === ROLE.student
                   ? studentStatistics?.country
                   : teacherStatistics?.country
               }
-              title={distributionRole}
             />
           </Card>
         </Col>
-        <Col></Col>
+        <Col span={12}>
+          <Card>
+            <ChartSelect defaultValue="studentType" onSelect={setSelectedType}>
+              <Select.Option value="studentType">Student Types</Select.Option>
+              <Select.Option value="courseType">Course Types</Select.Option>
+              <Select.Option value="gender">Gender</Select.Option>
+            </ChartSelect>
+            {selectedType === "studentType" ? (
+              <PieChart data={studentStatistics?.type} category="student" />
+            ) : selectedType === "courseType" ? (
+              <PieChart data={courseStatistics?.type} category="course" />
+            ) : (
+              <Row gutter={16}>
+                <Col span={12}>
+                  <PieChart
+                    data={Object.entries(overview.student.gender).map(
+                      ([name, amount]) => ({
+                        name,
+                        amount,
+                      })
+                    )}
+                    category="gender"
+                    title="student"
+                  />
+                </Col>
+
+                <Col span={12}>
+                  <PieChart
+                    data={Object.entries(overview.teacher.gender).map(
+                      ([name, amount]) => ({
+                        name,
+                        amount,
+                      })
+                    )}
+                    category="gender"
+                    title="teacher"
+                  />
+                </Col>
+              </Row>
+            )}
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card>
+            <LineChart
+              data={{
+                [ROLE.student]: studentStatistics?.createdAt,
+                [ROLE.teacher]: teacherStatistics?.createdAt,
+                course: courseStatistics?.createdAt,
+              }}
+            />
+          </Card>
+        </Col>
       </Row>
     </Card>
   );

@@ -131,7 +131,11 @@ export default function Teachers() {
     setModalVisible(true);
   };
   const addAction = () => {
-    setEditingTeacher(null);
+    setEditingTeacher(null, () => {
+      if (editingTeacher) {
+        console.log(editingTeacher);
+      }
+    });
     setModalVisible(true);
   };
 

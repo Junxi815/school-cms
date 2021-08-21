@@ -1,4 +1,22 @@
-# wrote Login page - sign in form
+# Task 13
+
+- map chart 思路：
+  highchart react offical -> options -> API documentation -> colorAxis (legend by default), mapNavigation, credits, title, series(最重要) -> mapData -> 结合 demo js 代码，map collection reference -> World with Palestine areas, high resolution GeoJSON (https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json) -> 在 series 中设置 data, 数据样式：[hc-key, value] 如[['us-ny', 0],['us-mi', 5],['us-tx', 3],['us-ak', 5]]，设置 mapData 应该是一个对象
+
+- pie chart 思路：
+  写好选择器组件，由 selected value 不同调用不同传入 props 的 PieChart 组件 -> highchart react offical -> options -> 查看 pie chart demo -> copy options 进行修改 -> series data 格式： 如 data: [{ y: 1,name: "Point2",color: "#00FF00"}, {y: 7,name: "Point1",color: "#FF00FF"}] -> props data format 和 total 计算
+- line chart 思路：
+  找到 line chart demo 拷贝 options 数据 -> 根据需求 对照 api 修改 options 设置 -> xAxis, series ->series 格式之一：[name:string, data:Array<number>] -》 format data
+
+问题：
+stops: Array.<Array.<number, Highcharts.ColorString>> 为什么会有.
+Highcharts.getOptions().colors[0] ts 错误
+
+课上回顾：
+
+- yarn npm 最好不要混用
+- 对一个不熟悉的 library 除了看 demo 和 document 还可以看一些视频
+- 可视化的一些库：chart.js，highcharts，d3.js，echarts
 
 # Task 12
 
