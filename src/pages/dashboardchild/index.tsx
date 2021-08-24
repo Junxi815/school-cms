@@ -33,6 +33,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import Teachers from "../manager/teachers";
+import MessagePage from "../manager/message";
 
 const { Content, Sider } = Layout;
 
@@ -166,7 +167,7 @@ export default function DashboardChild() {
                   <EditCourse />
                 </Route>
                 <Route exact path="/dashboard/manager/message">
-                  <div>message</div>
+                  <MessagePage />
                 </Route>
                 {/* 如果role是student或teacher，。。。 */}
               </Switch>

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getMapGeoJSON } from "../../lib/services/api";
 import { CommonChartComponentProps } from "../modal/statistics";
 
+const { colors } = Highcharts.getOptions();
+
 export default function Distribution({ data }: CommonChartComponentProps) {
   const [mapGeoJSON, setMapGeoJSON] = useState<any>(null);
   const [options, setOptions] = useState<any>({
@@ -11,8 +13,7 @@ export default function Distribution({ data }: CommonChartComponentProps) {
       min: 0,
       stops: [
         [0, "#fff"],
-        [0.5, "#2f7ed8"],
-        // [0.5, Highcharts.getOptions().colors[0]],
+        [0.5, colors && colors[0]],
         [1, "#1890ff"],
       ],
     },
@@ -21,7 +22,7 @@ export default function Distribution({ data }: CommonChartComponentProps) {
     mapNavigation: {
       enabled: true,
       enableButtons: false,
-      enableMouseWheelZoom: true, //不起作用
+      enableMouseWheelZoom: true,
     },
 
     credits: { enabled: false },
@@ -31,10 +32,6 @@ export default function Distribution({ data }: CommonChartComponentProps) {
     },
 
     title: { text: undefined },
-    // title: {
-    //   text: '<select defaultValue="car1"><option value="car1">car1</option><option value="car2">car2</option></select>',
-    //   useHTML: true,
-    // },
 
     series: [
       {
@@ -92,10 +89,6 @@ export default function Distribution({ data }: CommonChartComponentProps) {
       ],
     });
   }, [data, mapGeoJSON]);
-
-  // useEffect(() => {
-  //   console.log(options.series);
-  // }, [options]);
 
   return (
     <HighchartsReact

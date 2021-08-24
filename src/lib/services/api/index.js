@@ -165,3 +165,17 @@ export const getMapGeoJSON = () => {
     "https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json"
   );
 };
+
+export const getMessage = (params = {}) => {
+  return axiosInstance
+    .get("/message", { params })
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
+export const markAsRead = (params) => {
+  return axiosInstance
+    .put("/message", params)
+    .then((res) => res.data)
+    .catch(errHandler);
+};

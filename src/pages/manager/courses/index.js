@@ -12,8 +12,6 @@ export default function Courses() {
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({ limit: 20, page: 1 });
   const [hasMore, setHasMore] = useState(true);
-  // const [totalItems, setTotalItems] = useState(0);
-  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -55,7 +53,9 @@ export default function Courses() {
                   to={`/dashboard/${user.role}/courses/${item.id}`}
                   style={{ marginTop: "50px" }}
                 >
-                  <Button type="primary" style={{marginTop:"10px"}}>Read More</Button>
+                  <Button type="primary" style={{ marginTop: "10px" }}>
+                    Read More
+                  </Button>
                 </Link>
               </CourseOverview>
             </List.Item>
