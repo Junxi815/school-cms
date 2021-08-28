@@ -10,19 +10,22 @@ interface ReqMessageParams {
   type: MessageType;
 }
 
-export function useMessageList(
-  pagination: Pagination,
-  reqInfo: Partial<ReqMessageParams>
-): { data: Message[]; hasMore: boolean } {
+export function useMessageList(reqInfo: Partial<ReqMessageParams>) {
   const [data, setData] = useState<Message[]>([]);
+  const [pagination, setPagination] = useState<Pagination>({
+    limit: 20,
+    page: 1,
+  });
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
-      const result = await getMessage({
-        ...pagination,
-        ...reqInfo,
-      });
+      const { type, userId } = reqInfo;
+      const reqParams = !!type
+        ? { ...pagination, ...reqInfo }
+        : { ...pagination, userId };
+      const result = await getMessage(reqParams);
+
       if (result.data) {
         const { total, messages } = result.data;
         const newData = data.concat(messages);
@@ -32,5 +35,5 @@ export function useMessageList(
     })();
   }, [pagination, reqInfo]);
 
-  return { data, hasMore };
+  return { data, hasMore, pagination, setPagination };
 }

@@ -2,7 +2,6 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useState, useEffect } from "react";
 import { BarChartProps } from "../modal/statistics";
-import { SkillDes } from "../../lib/constants/config";
 
 export default function BarChart({ data }: BarChartProps) {
   const [options, setOptions] = useState<any>({
@@ -49,15 +48,7 @@ export default function BarChart({ data }: BarChartProps) {
         stacking: "normal",
       },
     },
-    // series: [
-    //   { name: "know", data: [49, 71], stack: "skills" },
-    //   {
-    //     name: "practiced",
-    //     data: [11, 22],
-    //     stack: "skills",
-    //   },
-    //   { name: "student", data: [2, 3] },
-    // ],
+
     credits: {
       enabled: false,
     },
@@ -78,7 +69,6 @@ export default function BarChart({ data }: BarChartProps) {
   });
 
   useEffect(() => {
-    console.log(data);
     const { teacherSkills, studentInterest } = data;
     if (!teacherSkills || !studentInterest) {
       return;

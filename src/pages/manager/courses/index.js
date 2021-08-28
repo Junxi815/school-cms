@@ -14,7 +14,7 @@ export default function Courses() {
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    (async () => {
       const result = await getCourses(pagination);
       if (result.data) {
         const { courses, total } = result.data;
@@ -24,8 +24,7 @@ export default function Courses() {
       } else {
         message.error(result.msg);
       }
-    };
-    fetchCourses();
+    })();
   }, [pagination]);
   return (
     <>

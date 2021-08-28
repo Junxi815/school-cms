@@ -1,4 +1,5 @@
 import {
+  Card,
   Row,
   Col,
   Select,
@@ -15,60 +16,82 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import { Pagination } from "../../../components/modal/api";
+
 import { Message, MessageType } from "../../../components/modal/message";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { format } from "date-fns";
 import { flatten } from "lodash";
-import { markAsRead } from "../../../lib/services/api";
+import { getMessage, markAsRead } from "../../../lib/services/api";
 import { getUser } from "../../../lib/services/userInfo";
 import BackToTop from "../../../components/common/back-to-top";
-import { useMessageList } from "../../../components/custom-hooks/message-list-effect";
+// import { useMessageList } from "../../../components/custom-hooks/message-list-effect";
+import { useMsgStatistic } from "../../../components/provider";
+import { Pagination } from "../../../components/modal/api";
 
 type DataSource = [string, Message[]][];
+const { userId } = getUser();
 
 export default function MessageShow() {
   const [type, setType] = useState<MessageType>(null); //"notification" | "message"
+  const [data, setData] = useState<Message[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     limit: 20,
     page: 1,
   });
-
-  const { data, hasMore } = useMessageList(pagination, {
-    type,
-    userId: getUser().userId,
-  });
-
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  // const { data, hasMore, pagination, setPagination } = useMessageList({
+  //   type,
+  //   userId: getUser().userId,
+  // });
   const [source, setSource] = useState<{ [key: string]: Message[] }>({}); //{'2021-06-30': Message[], ...}
   const [dataSource, setDataSource] = useState<DataSource>([]); //[[string, Message[]],...]
+  const { dispatch } = useMsgStatistic();
 
   //[{'2021-06-30':Message[]},{'2021-05-11':Message[]}]
   useEffect(() => {
-    const result = data.reduce((acc, cur) => {
-      const key = format(new Date(cur.createdAt), "yyyy-MM-dd");
+    (async () => {
+      const reqParams = !!type
+        ? { ...pagination, type, userId }
+        : { ...pagination, userId };
+      const result = await getMessage(reqParams);
 
-      if (!acc[key]) {
-        acc[key] = [cur];
-      } else {
-        acc[key].push(cur);
+      if (result.data) {
+        const { total, messages } = result.data;
+        const newData = data.concat(messages);
+        setData(newData);
+        setHasMore(newData.length < total);
       }
+    })();
+  }, [pagination, type]);
 
-      return acc;
-    }, source);
-    //source : {'2021-06-30': Message[], ...}
-    const flattenResult = Object.entries(result).sort(
-      (pre, next) => new Date(next[0]).getTime() - new Date(pre[0]).getTime()
-    );
+  useEffect(() => {
+    if (data.length > 0) {
+      const result = data.reduce((acc, cur) => {
+        const key = format(new Date(cur.createdAt), "yyyy-MM-dd");
 
-    setSource({ ...result });
-    setDataSource(flattenResult);
+        if (!acc[key]) {
+          acc[key] = [cur];
+        } else {
+          acc[key].push(cur);
+        }
+
+        return acc;
+      }, source);
+      //source : {'2021-06-30': Message[], ...}
+      const flattenResult = Object.entries(result).sort(
+        (pre, next) => new Date(next[0]).getTime() - new Date(pre[0]).getTime()
+      );
+
+      setSource({ ...result });
+      setDataSource(flattenResult);
+    }
   }, [data]);
 
   return (
-    <>
+    <Card>
       <Row align="middle">
         <Col span={8}>
-          <Typography.Title level={2}>Recent Messages</Typography.Title>
+          <Typography.Title level={3}>Recent Messages</Typography.Title>
         </Col>
 
         <Col span={8} offset={8} style={{ textAlign: "right" }}>
@@ -76,6 +99,7 @@ export default function MessageShow() {
             defaultValue={null}
             onSelect={(value) => {
               setType(value);
+              setData([]);
               setPagination({ ...pagination, page: 1 });
               setSource({});
             }}
@@ -108,9 +132,9 @@ export default function MessageShow() {
               <Space size="large">
                 <Typography.Title level={4}>{date}</Typography.Title>
               </Space>
-              {values.map((item) => (
+              {values.map((item, index) => (
                 <List.Item
-                  key={item.createdAt}
+                  key={item.createdAt + index}
                   style={{ opacity: item.status ? 0.6 : 1 }}
                   actions={[<Space>{item.createdAt}</Space>]}
                   extra={
@@ -127,7 +151,7 @@ export default function MessageShow() {
                       return;
                     }
 
-                    markAsRead({ ids: [item.id] }).then((res) => {
+                    markAsRead({ ids: [item.id], status: 1 }).then((res) => {
                       if (res.data) {
                         let target = null;
 
@@ -147,10 +171,10 @@ export default function MessageShow() {
 
                         target.status = 1;
                         setDataSource([...dataSource]);
-                        // dispatch({
-                        //   type: "decrement",
-                        //   payload: { count: 1, type: item.type },
-                        // });
+                        dispatch({
+                          type: "decrement",
+                          payload: { count: 1, type: item.type },
+                        });
                       }
                     });
                   }}
@@ -167,6 +191,6 @@ export default function MessageShow() {
         ></List>
       </InfiniteScroll>
       <BackToTop />
-    </>
+    </Card>
   );
 }

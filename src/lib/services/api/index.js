@@ -1,6 +1,9 @@
 import axiosInstance from "./axiosInstance";
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import { getUser } from "../userInfo";
+
+const baseURL = "https://cms.chtoma.com/api";
 
 const errHandler = (err) => {
   if (err.response) {
@@ -173,9 +176,25 @@ export const getMessage = (params = {}) => {
     .catch(errHandler);
 };
 
+export const getMessageStatistic = () => {
+  return axiosInstance
+    .get("/message/statistics")
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
 export const markAsRead = (params) => {
   return axiosInstance
     .put("/message", params)
     .then((res) => res.data)
     .catch(errHandler);
+};
+
+export const messageEvent = () => {
+  return new EventSource(
+    `${baseURL}/message/subscribe?userId=${getUser().userId}`,
+    {
+      withCredentials: true,
+    }
+  );
 };

@@ -1,4 +1,30 @@
-#Task 14
+# Task 15
+
+api 问题： 调用时添加一些乱码 原本`https://cms.chtoma.com/api/message/statistics`
+变成` https://cms.chtoma.com/api/%E2%80%8B/message%E2%80%8B/statistics`
+原因：%E2%80%8B 叫 Zero-width space，简称 ZWSP，中文名 零宽空格；它是一种不可打印的 Unicode 字符，就是说一般情况 肉眼看不见 ，但是当它变成 URL 的一部分，就会变成 %E2%80%8E ，使你的 URL 错误，请求的时候就会报 404.
+解决方法：手敲 api 地址，而不是从 swagger 复制
+
+自定义 useEffect 不间断调用 api 的问题
+
+课上回顾：
+
+- 拿到他人代码从以下几个维度去理解：
+
+1. 从类型（ts）角度看，传入什么数据，取回什么样的数据
+2. 从传入参数看参数怎么被处理，摸清大概处理路径
+3. 然后再看细节
+
+- 常见的几种需要设置清理步骤：
+
+1. 定时器
+2. 手动挂载的事件监听
+3. 第三方库实现的事件监听，比如地图 api，计时 api，退出时考虑它是否实现了清理
+4. 原生的网络连接 AJAX 观察者模式 中继模式有需要监听的地方
+
+- 不管什么前段框架，都需要解决父子，兄弟组件间的通信（与状态管理是俩个概念）
+
+# Task 14
 
 turn off strictNullChecks in tsconfig 并且重启编辑器-> 可以解决 null not assign to your declare type
 Omit 作用（interface Message 里）

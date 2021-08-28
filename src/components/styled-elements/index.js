@@ -40,10 +40,6 @@ export const StyledHeader = styled(Header)`
     display: inline-block;
     float: right;
 
-    & span {
-      margin-right: 20px;
-    }
-
     & span.logout {
       cursor: pointer;
     }

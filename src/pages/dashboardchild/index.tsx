@@ -34,6 +34,7 @@ import {
 } from "@ant-design/icons";
 import Teachers from "../manager/teachers";
 import MessagePage from "../manager/message";
+import MessagePanel from "../../components/messagePanel/message-panel";
 
 const { Content, Sider } = Layout;
 
@@ -44,10 +45,7 @@ export default function DashboardChild() {
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [isLoading, setLoadingStatus] = useState(false);
-  // const [defaultOpenKeys, setDefaultOpenKeys] = useState();
-  // const [defaultSelectedKeys, setDefaultSelectedKeys] = useState();
   let sideNav, sideNavWithKeys, defaultOpenKeys, defaultSelectedKeys;
-
   if (!!user && (!role || role === user.role)) {
     sideNav = sideNavLists.find((item) => item.role === role)?.sideNav;
     sideNavWithKeys = getSideNavWithKeys(sideNav, role);
@@ -117,7 +115,14 @@ export default function DashboardChild() {
               )}
               <div>
                 <span>{`Hi, ${role}!`}</span>&nbsp;
-                <span className="logout" onClick={handleLogout}>
+                <span style={{ margin: "0 30px" }}>
+                  <MessagePanel />
+                </span>
+                <span
+                  className="logout"
+                  onClick={handleLogout}
+                  style={{ marginRight: 20 }}
+                >
                   <LogoutOutlined style={{ margin: 5 }} />
                   Logout
                 </span>
