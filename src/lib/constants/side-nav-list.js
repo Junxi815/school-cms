@@ -8,6 +8,7 @@ import {
   ReadOutlined,
   SolutionOutlined,
   TeamOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
 import { ROLE } from "./role";
 
@@ -19,6 +20,8 @@ export const routePath = {
   addCourse: "add-course",
   editCourse: "edit-course",
   message: "message",
+  own: "own",
+  schedule: "schedule",
 };
 
 const overview = {
@@ -79,6 +82,31 @@ const courses = {
   ],
 };
 
+const studentCourses = {
+  path: "course",
+  label: "Course",
+  icon: <ReadOutlined />,
+  hideLinkInBreadcrumb: true,
+  subNav: [
+    {
+      path: routePath.courses,
+      label: "All Courses",
+      icon: <ProjectOutlined />,
+    },
+    {
+      path: routePath.own,
+      label: "My Courses",
+      icon: <FileAddOutlined />,
+    },
+  ],
+};
+
+const classSchedule = {
+  path: routePath.schedule,
+  label: "Class Schedule",
+  icon: <CalendarOutlined />,
+};
+
 const messages = {
   path: routePath.message,
   label: "Message",
@@ -91,7 +119,10 @@ export const sideNavLists = [
     sideNav: [overview, students, teachers, courses, messages],
   },
   { role: ROLE.teacher, sideNav: [overview] },
-  { role: ROLE.student, sideNav: [overview] },
+  {
+    role: ROLE.student,
+    sideNav: [overview, studentCourses, classSchedule, messages],
+  },
 ];
 
 // export const menuList_manager = [

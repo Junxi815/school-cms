@@ -6,15 +6,13 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
-import {
-  getStatisticsOverview,
-  getStatistics,
-} from "../../../lib/services/api";
-import { ROLE } from "../../../lib/constants/role";
-import Distribution from "../../../components/manager/distribution";
-import PieChart from "../../../components/manager/pie";
-import LineChart from "../../../components/manager/line";
-import BarChart from "../../../components/manager/bar";
+import { getStatisticsOverview, getStatistics } from "../../lib/services/api";
+import { ROLE } from "../../lib/constants/role";
+import Distribution from "../../components/manager/distribution";
+import PieChart from "../../components/manager/pie";
+import LineChart from "../../components/manager/line";
+import BarChart from "../../components/manager/bar";
+import { Overview } from "../student";
 
 const OverviewIconCol = styled(Col)`
   display: flex;
@@ -58,40 +56,40 @@ const ChartSelect = styled(Select)`
   }
 `;
 
-const Overview = ({ data, title, icon, style }) => {
-  const [lastMonthAddedPercent, setLastMonthAddedPercent] = useState(0);
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    if (!!data) {
-      const lastMonthAddedPercent = parseFloat(
-        String(((data.lastMonthAdded / data.total) * 100).toFixed(2))
-      );
+// const Overview = ({ data, title, icon, style }) => {
+//   const [lastMonthAddedPercent, setLastMonthAddedPercent] = useState(0);
+//   const [total, setTotal] = useState(0);
+//   useEffect(() => {
+//     if (!!data) {
+//       const lastMonthAddedPercent = parseFloat(
+//         String(((data.lastMonthAdded / data.total) * 100).toFixed(2))
+//       );
 
-      setLastMonthAddedPercent(lastMonthAddedPercent);
-      setTotal(data.total);
-    }
-  }, [data]);
+//       setLastMonthAddedPercent(lastMonthAddedPercent);
+//       setTotal(data.total);
+//     }
+//   }, [data]);
 
-  return (
-    <Card style={{ borderRadius: 5, cursor: "pointer", ...style }}>
-      <Row>
-        <OverviewIconCol span={7}>{icon}</OverviewIconCol>
-        <OverviewCol span={17}>
-          <h3>{title}</h3>
-          <h2>{total}</h2>
-          <Progress
-            percent={100 - lastMonthAddedPercent}
-            size="small"
-            showInfo={false}
-            strokeColor="white"
-            trailColor="lightgreen"
-          />
-          <p>{`${lastMonthAddedPercent}% Increase in 30 Days`}</p>
-        </OverviewCol>
-      </Row>
-    </Card>
-  );
-};
+//   return (
+//     <Card style={{ borderRadius: 5, cursor: "pointer", ...style }}>
+//       <Row>
+//         <OverviewIconCol span={7}>{icon}</OverviewIconCol>
+//         <OverviewCol span={17}>
+//           <h3>{title}</h3>
+//           <h2>{total}</h2>
+//           <Progress
+//             percent={100 - lastMonthAddedPercent}
+//             size="small"
+//             showInfo={false}
+//             strokeColor="white"
+//             trailColor="lightgreen"
+//           />
+//           <p>{`${lastMonthAddedPercent}% Increase in 30 Days`}</p>
+//         </OverviewCol>
+//       </Row>
+//     </Card>
+//   );
+// };
 
 export default function ManagerHome() {
   const [overview, setOverview] = useState(null);

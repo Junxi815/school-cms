@@ -1,5 +1,6 @@
 # Task 15
 
+ts 问题：student overview 114 行 `amount: (values as Array<object>).length,`
 api 问题： 调用时添加一些乱码 原本`https://cms.chtoma.com/api/message/statistics`
 变成` https://cms.chtoma.com/api/%E2%80%8B/message%E2%80%8B/statistics`
 原因：%E2%80%8B 叫 Zero-width space，简称 ZWSP，中文名 零宽空格；它是一种不可打印的 Unicode 字符，就是说一般情况 肉眼看不见 ，但是当它变成 URL 的一部分，就会变成 %E2%80%8E ，使你的 URL 错误，请求的时候就会报 404.

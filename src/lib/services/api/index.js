@@ -156,9 +156,12 @@ export const getStatisticsOverview = () => {
     .catch(errHandler);
 };
 
-export const getStatistics = (role) => {
+export const getStatistics = (type, userId) => {
+  const reqString = !!userId
+    ? `/statistics/${type}?useId=${userId}`
+    : `/statistics/${type}`;
   return axiosInstance
-    .get(`/statistics/${role}`)
+    .get(reqString)
     .then((res) => res.data)
     .catch(errHandler);
 };

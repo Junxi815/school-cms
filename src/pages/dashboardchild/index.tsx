@@ -9,7 +9,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Layout, message, Spin, Menu } from "antd";
-import ManagerHome from "../manager/home";
+import ManagerHome from "../manager";
 import Students from "../manager/students";
 import StudentDetail from "../manager/students/detail";
 import Courses from "../manager/courses";
@@ -35,6 +35,7 @@ import {
 import Teachers from "../manager/teachers";
 import MessagePage from "../manager/message";
 import MessagePanel from "../../components/messagePanel/message-panel";
+import StudentHome from "../student";
 
 const { Content, Sider } = Layout;
 
@@ -174,7 +175,15 @@ export default function DashboardChild() {
                 <Route exact path="/dashboard/manager/message">
                   <MessagePage />
                 </Route>
-                {/* 如果role是student或teacher，。。。 */}
+                <Route exact path="/dashboard/student">
+                  <StudentHome />
+                </Route>
+                <Route exact path="/dashboard/student/courses">
+                  <Courses />
+                </Route>
+                <Route exact path="/dashboard/student/own">
+                  <div>own courses ...</div>
+                </Route>
               </Switch>
               {/* </StateContext.Provider> */}
             </Content>
