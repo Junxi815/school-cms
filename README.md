@@ -1,3 +1,8 @@
+# 16
+
+课上回顾：
+复用代码，首先从怎么设计复用组件的 props 或者复用函数的形参来考虑
+
 # Task 15
 
 ts 问题：student overview 114 行 `amount: (values as Array<object>).length,`
