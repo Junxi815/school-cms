@@ -1,3 +1,24 @@
+# 18
+
+课上回顾：
+
+- 根据业务需求 设计算法
+- 处理数据中，最好不要修改原数据
+- 常见 css 库：styled component, bootstrap, tailwind css
+- 小型的第三方库可以直接拷贝源码进行修改以满足具体需求
+- .eslintignore prettierignore 等 可以设置避免语法检查的文件
+- 复习科里化函数
+- wix wordpress
+- 复杂 css 样式，根据网上搜索到类似的，然后根据具体业务要求修改
+
+# 17
+
+token 过期问题： 虽然但是还是登陆状态，fetch api 有问题
+api 调用{
+...pagination,
+useId: getUser().userId,
+} 将 userId 写成 useId 不报错
+
 # 16
 
 课上回顾：

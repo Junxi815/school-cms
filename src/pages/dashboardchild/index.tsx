@@ -36,6 +36,8 @@ import Teachers from "../manager/teachers";
 import MessagePage from "../manager/message";
 import MessagePanel from "../../components/messagePanel/message-panel";
 import StudentHome from "../student";
+import StudentOwnCourses from "../student/own";
+import Schedule from "../student/schedule";
 
 const { Content, Sider } = Layout;
 
@@ -181,8 +183,17 @@ export default function DashboardChild() {
                 <Route exact path="/dashboard/student/courses">
                   <Courses />
                 </Route>
+                <Route exact path="/dashboard/student/courses/:id">
+                  <CourseDetail />
+                </Route>
                 <Route exact path="/dashboard/student/own">
-                  <div>own courses ...</div>
+                  <StudentOwnCourses />
+                </Route>
+                <Route exact path="/dashboard/student/schedule">
+                  <Schedule />
+                </Route>
+                <Route exact path="/dashboard/student/message">
+                  <MessagePage />
                 </Route>
               </Switch>
               {/* </StateContext.Provider> */}

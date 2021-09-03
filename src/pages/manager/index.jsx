@@ -14,32 +14,6 @@ import LineChart from "../../components/manager/line";
 import BarChart from "../../components/manager/bar";
 import { Overview } from "../student";
 
-const OverviewIconCol = styled(Col)`
-  display: flex;
-  align-items: center;
-  & .anticon {
-    background: #fff;
-    font-size: 32px;
-    border-radius: 50%;
-    color: #999;
-    padding: 24px;
-  }
-`;
-const OverviewCol = styled(Col)`
-  color: #fff;
-  h2,
-  h3 {
-    color: #fff;
-    margin-bottom: 0;
-  }
-  h2 {
-    font-size: 32px;
-  }
-  p {
-    margin-bottom: 0;
-  }
-`;
-
 const ChartSelect = styled(Select)`
   position: "relative";
   left: 50%;

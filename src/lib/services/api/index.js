@@ -201,3 +201,10 @@ export const messageEvent = () => {
     }
   );
 };
+
+export const getClassSchedule = () => {
+  return axiosInstance
+    .get(`/class/schedule?userId=${getUser().userId}`)
+    .then((res) => res.data)
+    .catch(errHandler);
+};
