@@ -5,12 +5,14 @@ import {
   Redirect,
 } from "react-router-dom";
 import Login from "./pages/login";
-import Home from "./pages/home";
 import DashboardChild from "./pages/dashboardchild";
 import Signup from "./pages/signup";
 import "./App.css";
 import { getUser } from "./lib/services/userInfo";
 import { MessageProvider } from "./components/provider";
+import Home from "./pages";
+import Events from "./pages/events";
+import Gallery from "./pages/gallery";
 
 function App() {
   const user = getUser();
@@ -28,6 +30,14 @@ function App() {
 
           <Route exact path="/signup">
             <Signup />
+          </Route>
+
+          <Route exact path="/events">
+            <Events />
+          </Route>
+
+          <Route exact path="/gallery">
+            <Gallery />
           </Route>
 
           <Route exact path="/dashboard">

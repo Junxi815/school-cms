@@ -48,7 +48,7 @@ function Login() {
 
   return (
     <>
-      <Header hasLogin={!!user.role} />
+      <Header />
       <StyledDiv>
         <StyledTitle>COURSE MANAGEMENT ASSISTANT</StyledTitle>
         <Form

@@ -1,5 +1,20 @@
 # 18
 
+步骤：
+
+- public 目录下 index.html 引入 css javascript
+- 修改 top menu(Header 组件): 引入 antd 的 Affix 和 Dropdown 组件 1.设定 Affix Dropdown 的 attributes 2.根据浏览器大小设置 css； 3.根据当前路由路径设置 current 及最后一个菜单项 login || dashboard
+- gallery 绕柱旋转轮播图，用 css 实现
+
+问题：` <link rel="stylesheet" href="/css/reset.css" /> <link rel="stylesheet" href="/css/style.css" />`
+
+<!-- //同时引用俩个css文件 affix效果出不来 -->
+
+{/_ Dropdown 必须有子元素保留 要不出错
+Error: React.Children.only expected to receive a single React element child. _/}
+
+下载的图片很模糊
+
 课上回顾：
 
 - 根据业务需求 设计算法
