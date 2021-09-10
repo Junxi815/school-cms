@@ -2,16 +2,16 @@ import { Typography, Form, Input, Checkbox, Button, Radio } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { Link, useHistory, Redirect } from "react-router-dom";
-import { login } from "../../lib/services/api";
-import { ROLE } from "../../lib/constants/role";
-import { saveUser, getUser } from "../../lib/services/userInfo";
+import { login } from "../lib/services/api";
+import { ROLE } from "../lib/constants/role";
+import { saveUser, getUser } from "../lib/services/userInfo";
 import { message } from "antd";
-import Header from "../../components/header/header";
+import Header from "../components/header/header";
 
 const { Title } = Typography;
 
 const StyledDiv = styled.div`
-  width: 700px;
+  width: 500px;
   margin: 30px auto 0;
 `;
 
@@ -23,7 +23,7 @@ const StyledTitle = styled(Title)`
   text-align: center;
   font-family: "BebasNeue";
   margin-bottom: 30px;
-  letter-spacing: -3px;
+  letter-spacing: -1px;
 `;
 
 function Login() {

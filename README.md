@@ -1,3 +1,37 @@
+# 20
+
+@Module({
+controllers: [CatsController],
+providers: [CatsService],
+exports: [CatsService]
+})
+export class CatsModule {}
+这里 export 俩个地方？
+解释：the subset of providers that are provided by this module and should be available in other modules which import this module
+
+forRoot() 什么意思
+
+Fastify Express
+
+Promise 再好好看看
+
+# 19
+
+module 有什么好处 后台怎么运行 没有考虑 缓存 并发
+
+总结：
+表单 调用 api 接口 封装 api 接口 拦截器的应用 （token 的应用）layout header left-menu 递归函数生成路径 科里化函数 面包屑的生成 增删改查 （怎么调试代码）（怎么看库资料 antd，highcharts,lodash）（怎么处理数据，根据业务要求设计算法），css 库：styled component，无限下拉列表，sse 与服务器同步消息实现，无限添加列表，(react hooks: useCallback(),useEffect(),useMemo(),useContext(),useReducer(),搜索框实现 debounce) 装饰器
+
+老师总结：
+重头戏：表单 表单控件 表单验证 修改数据的角色
+接口 前端与后端或者其他的通信问题 接口约束问题 输入 输出 接口发起之前要做得事情 接口得到之后要做得事情
+表格 展现数据 list table 相对比较简单 纯前端任务
+数据可视化 highdcharts 或其他库 要做得的就是配置 数据处理能力 检验 js 基本功
+网络通信 除了 api 还有实时通信的几个手段 websocket sse 等
+css 穿插整个项目
+算法 面包屑 算法是很有用的武器 可以优雅的去解决问题 如递归 广度优先或深度优先
+218 没涉及 可以私下关注下
+
 # 18
 
 步骤：

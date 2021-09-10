@@ -15,6 +15,14 @@ const errHandler = (err) => {
   }
 };
 
+export const signup = (role, email, password) => {
+  // password = CryptoJS.AES.encrypt(password, "cms").toString();
+  return axiosInstance
+    .post("/signup", { role, email, password })
+    .then((res) => res.data)
+    .catch(errHandler);
+};
+
 export const login = (role, email, password) => {
   password = CryptoJS.AES.encrypt(password, "cms").toString();
   return axiosInstance

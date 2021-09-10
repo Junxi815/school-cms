@@ -199,22 +199,24 @@ export default function StudentHome() {
 
   useEffect(() => {
     getStatistics(ROLE.student, userId).then((res) => {
-      const { own, recommend } = res.data;
-      const ownCourses = (own as Statistic).courses;
-      const overview = Object.entries(
-        //{ '0': Array, '1': Array }  ->  [["0",Array],["1",Array]]
-        groupBy(ownCourses, (item) => item.course.status)
-      ).map(([status, values]) => ({
-        status: +status,
-        total: ownCourses.length,
-        amount: (values as Array<Object>).length,
-      }));
-      setOverview(overview);
-      const { courses } = recommend;
-      const shuffledRecommend = courses.sort(() => 0.5 - Math.random());
-      const randomFiveRecommend =
-        courses.length > limit ? shuffledRecommend.slice(0, limit) : courses;
-      dispatch({ type: "setRecommend", payload: randomFiveRecommend });
+      if (!!res.data) {
+        const { own, recommend } = res.data;
+        const ownCourses = (own as Statistic).courses;
+        const overview = Object.entries(
+          //{ '0': Array, '1': Array }  ->  [["0",Array],["1",Array]]
+          groupBy(ownCourses, (item) => item.course.status)
+        ).map(([status, values]) => ({
+          status: +status,
+          total: ownCourses.length,
+          amount: (values as Array<Object>).length,
+        }));
+        setOverview(overview);
+        const { courses } = recommend;
+        const shuffledRecommend = courses.sort(() => 0.5 - Math.random());
+        const randomFiveRecommend =
+          courses.length > limit ? shuffledRecommend.slice(0, limit) : courses;
+        dispatch({ type: "setRecommend", payload: randomFiveRecommend });
+      }
     });
   }, []);
 

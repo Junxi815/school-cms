@@ -21,7 +21,7 @@ function Home() {
           </li>
           <li>
             <div className="container">
-              <div classNameN="info">
+              <div className="info">
                 <h2>
                   It’s Time to <br />
                   <span>Get back to school</span>
